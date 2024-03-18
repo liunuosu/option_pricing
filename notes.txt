@@ -1,0 +1,18 @@
+In the same spirit, we ask in this paper whether it is possible to use the information contained
+in implied volatility data to conduct inference about an underlying stochastic volatility (rather than
+a local volatility) model. At each point in time, implied volatility data take the form of a surface
+representing the implied volatility of the option as a function of its moneyness and time to maturity.
+We will show that it is possible to use a small number of observable and practically useful “shape
+characteristics” of the implied volatility surface, including but not limited to the slope of the implied
+volatility smile, to fully characterize the underlying stochastic volatility model.
+
+
+Difference from kelly, gu and xiu, is that they use a large set of covariates. This may not be applicable in our case,
+since we have ultra short term 0DTE options.. It will be difficult here, I suspect.
+
+What machine learning models do I want to use? We have 
+1. Ensemble Methods
+2. Penalized regressions
+3. Neural Network representations
+4. Support Vector Machines
+5. 
