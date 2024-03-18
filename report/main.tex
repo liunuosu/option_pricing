@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+
+\usepackage[british]{babel} % Use British English
+\usepackage[onehalfspacing]{setspace} % Increase line spacing
+\usepackage[margin=2.5cm]{geometry} % Modify margins
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx,booktabs,apacite} % Packages for 
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{placeins}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{comment}
+\usepackage{rotating}
+\usepackage{adjustbox}
+\textwidth 16.8cm \topmargin -1.5cm \oddsidemargin 0cm
+\evensidemargin 0cm \textheight 23.5cm \headsep 0.7cm
+\begin{document}
+
+\begin{titlepage}
+
+\title{     
+
+\normalsize \textsc{Seminar in Financial Case Studies}
+		\\ [2.0cm]
+		 \\
+		\LARGE \textbf{Comparative Analysis of Probability of Default Modelling under Bayesian and Frequentist Approaches: A (Reverse) Stress Testing Perspective} % Bayesian vs. Frequentist Methods in Probability of Default Modelling and (Reverse) Stress Testing
+		\\ [0.5cm]
+		\normalsize \today \vspace*{5\baselineskip}}
+
+\date{}
+
+\author{    
+		Group D: \\
+		Chenyan Yang, Liu Nuo Su, \\
+		Willem Castelijns, Cenchen Zhao, \\ 
+		\\ 
+		Erasmus University Rotterdam \\ [5.0cm]
+		}
+
+\maketitle
+
+\thispagestyle{empty}
+\end{titlepage}
+
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+\begin{abstract}
+In this paper we develop a Bayesian Hierarchical logit model to estimate the probabilities of defaults (PD) for companies in a bank's Small- and Medium-sized Enterprises portfolio. This portfolio contains a wide range of firm characteristics and is extended with macroeconomic variables in order to perform a stress test. The portfolio is stressed using the stress test scenarios provided by the European Banking Authority (EBA) for the years 2023 to 2025. For the analyzed dataset, the Bayesian Hierarchical model outperformed a traditional frequentist logistic regression model in terms of detecting default observations for the out-of-sample periods of 2016 to 2022. We show that the model is able to reproduce realistic default ratios, and credible intervals are established in the stress tests using the Bayesian properties of the model. Applying the PD model to the adverse stress test scenario designed by the EBA showed that the bank is vulnerable, as its Risk Weighted Assets increases by more than 20\%. The most important drivers for the PD are identified, and are used to create a reverse stress test scenario where Italy suffers from a debt crisis.  
+%constant firm char
+%baseline higher oos estimates
+%reverse stress test: shock italy simulated dept crisis gdp affected, interest rate largest effect on rwa metho how macroecono condi
+% and due to the Bayesian nature can also include confidence bounds on development of the defaults under the stress test scenario. 
+\end{abstract}
+%\input{1_introduction}
+%\input{2_literature_review}
+%\input{3_data}
+%\input{4_methodology}
+%\input{5_results}
+%\input{6_conclusion}
+
+
+
+%Pre-variable selection: Logistic regression: Correlation matrix, Stepwise regression based on AIC, BIC; ML: LASSO; Principle Component Analysis
+
+%Data: Macro variables of every country, same as for the stress scenario: GDP, unemployment rate, inflation
+
+
+\newpage
+\bibliographystyle{apacite}
+\bibliography{bibliography}
+\newpage
+%\input{Appendix}
+
+
+\end{document}

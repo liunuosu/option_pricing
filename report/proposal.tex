@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+
+\usepackage[british]{babel} % Use British English
+\usepackage[onehalfspacing]{setspace} % Increase line spacing
+\usepackage[margin=2.5cm]{geometry} % Modify margins
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx,booktabs,apacite} % Packages for 
+\usepackage{amssymb}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{placeins}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{comment}
+\usepackage{rotating}
+\usepackage{adjustbox}
+\textwidth 16.8cm \topmargin -1.5cm \oddsidemargin 0cm
+\evensidemargin 0cm \textheight 23.5cm \headsep 0.7cm
+\begin{document}
+
+\begin{titlepage}
+
+\title{     
+
+\normalsize \textsc{Seminar in Financial Case Studies}
+		\\ [2.0cm]
+		 \\
+		\LARGE \textbf{Comparative Analysis of Probability of Default Modelling under Bayesian and Frequentist Approaches: A (Reverse) Stress Testing Perspective} % Bayesian vs. Frequentist Methods in Probability of Default Modelling and (Reverse) Stress Testing
+		\\ [0.5cm]
+		\normalsize \today \vspace*{5\baselineskip}}
+
+\date{}
+
+\author{    
+		Group D: \\
+		Chenyan Yang, Liu Nuo Su, \\
+		Willem Castelijns, Cenchen Zhao, \\ 
+		\\ 
+		Erasmus University Rotterdam \\ [5.0cm]
+		}
+
+\maketitle
+
+\thispagestyle{empty}
+\end{titlepage}
+
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\input{1_introduction}
+\input{2_literature_review}
+\input{3_data}
+\input{4_methods}
+%\input{5_results}
+%\input{6_conclusion}
+
+
+
+%Pre-variable selection: Logistic regression: Correlation matrix, Stepwise regression based on AIC, BIC; ML: LASSO; Principle Component Analysis
+
+%Data: Macro variables of every country, same as for the stress scenario: GDP, unemployment rate, inflation
+
+
+\newpage
+\bibliographystyle{apacite}
+\bibliography{bibliography}
+\newpage
+%\input{Appendix}
+
+
+\end{document}
