@@ -1,14 +1,14 @@
 \section{Introduction} \label{introduction}
-The market for ultra short tenor has grown tremendously in recent years. Since the introduction of the so-called 'weeklies', investors and traders have gained the ability to hedge against, or take advantage of short-term market trends and specific events without committing to longer-term contracts. In 2022, it is estimated that [percentage] of the daily option trading volume belonged to the ultra short term tenor options. [cite] %[Introduction, grab attention]
+The market for ultra short tenor has grown tremendously in recent years. Since the introduction of the so-called 'weeklies', investors and traders have gained the ability to hedge against, or take advantage of short-term market trends and specific events without committing to longer-term contracts. In 2022, it is estimated that around 60\% of the daily option trading volume belonged to the ultra short term tenor options.  %[Introduction, grab attention]
 
-Although making up the majority of the trading volume, limited research has been done on ultra short tenor options. For longer maturity derivative, researches modeling the Implied Volatility Surface (IVS) were often centered around the fundamentals of a company and the macro-economic trends at the time [e.g. cite]. For those derivatives, out-of-the money options are less affected by sudden market events, as volatility tends to stabilize over longer time horizons. In contrast, ultra short tenor options tend to expire within immediate market conditions, where the sudden volatility spike often ends up determining the payoff of the derivative. Therefore, ultra short tenor options are much more affected by immediate market conditions, making the predictability of the derivative much more challenging.
+Although making up the majority of the trading volume, limited research has been done on ultra short tenor options. For longer maturity derivative, researches modeling the Implied Volatility Surface (IVS) were often centered around the fundamentals of a company and the macro-economic trends at the time (e.g. \citeA{YAN2011216}, \citeA{bernales2014can}). For those derivatives, out-of-the money options are less affected by sudden market events, as volatility tends to stabilize over longer time horizons. In contrast, ultra short tenor options tend to expire within immediate market conditions, where the sudden volatility spike often ends up determining the payoff of the derivative. Therefore, ultra short tenor options are much more affected by immediate market conditions, making the predictability of the derivative much more challenging.
 %such as spontaneous changes in market sentiment, earning announcements of a company, or news events. 
 %In contrast, ultra short tenor options are much m
 % smoothing? [IVS - and limited explain-ability in data[Describe the problem, IVS and thing]]
 
 %[Quarterly numbers do not reflect the immediate market conditions]
 
-In this work, we investigate the implied volatility of ultra short tenor options, and plot the options against different strike prices and times to maturity using the IVS. We employ machine learning algorithms, as they are suited for capturing complex, non-linear relations in the process of implied volatility estimation. Furthermore, as quarterly numbers do not immediately reflect the current market conditions, we incorporate news data obtained from The New York Times (cite, NYT was used before) as input. We make use of the FinBERT language model developed by (cite) to obtain the semantics of the text, use the embedding, and transform them into a format compatible for machine learning. 
+In this work, we investigate the implied volatility of ultra short tenor options, and plot the options against different strike prices and times to maturity using the IVS. We employ machine learning algorithms, as they are suited for capturing complex, non-linear relations in the process of implied volatility estimation. Furthermore, as quarterly numbers do not immediately reflect the current market conditions, we incorporate news data obtained from The New York Times as explored by \cite{kim2023forecasting} as input. We make use of the FinBERT language model developed by \cite{yang2020finbert}, and is specialized to obtain the semantics of the text, use the embedding, and transform them into a format compatible for machine learning for Financial news data. 
 
 
 %The price of an option is usually expressed in terms of implied volatility, as the one-to-one mapping allows for comparison of options across different strike prices and times to maturity. Plotting the volatility against the two results in the well-known IVS used by practitioners and researches alike.  %IVS here
@@ -35,6 +35,7 @@ In this work,  we aim to answer the following questions:
 
 3. What differences exist between the estimation of individual stock options and the S\&P500 index options?
 
+[4. (Ideally) we want to make an improvement on one of the machine learning algorithms, too, and see if it is superior to the other algorithms]
 [Short answer to questions]
 
 %[Overview of the rest of the paper]
