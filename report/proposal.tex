@@ -1,4 +1,15 @@
-\documentclass[11pt]{article}
+
+%\documentclass{article}
+\documentclass[a4paper,11pt]{article}
+
+% FILL OUT THE DETAILS BELOW:
+\author{Liu Nuo Su}
+\title{\textit{Thesis pre-proposal}}
+
+\newcommand{\studentnumber}{510846}
+\newcommand{\program}{Quantitative Finance}
+\newcommand{\supervisor}{Dr. M. Grith}
+\newcommand{\secondassesor}{TBD}
 
 \usepackage[british]{babel} % Use British English
 \usepackage[onehalfspacing]{setspace} % Increase line spacing
@@ -7,76 +18,73 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{graphicx,booktabs,apacite} % Packages for 
 \usepackage{amssymb}
-\usepackage{eurosym}
+
+%\usepackage[english]{babel}
+%\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{amsmath}
 \usepackage{placeins}
 
+%\usepackage{hyperref}
+%\usepackage{graphicx}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+%\usepackage{apacite}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
-\usepackage{multirow}
-\usepackage{booktabs}
-\usepackage{siunitx}
-\usepackage{comment}
-\usepackage{rotating}
-\usepackage{adjustbox}
-\textwidth 16.8cm \topmargin -1.5cm \oddsidemargin 0cm
-\evensidemargin 0cm \textheight 23.5cm \headsep 0.7cm
+
+
+%\title{Thesis proposal: \textit{Extreme market volatility quantile estimation using extrapolation neural networks in a non-stationary model}}
+%\author{Liu Nuo Su}
+
+%\begin{document}
+%\maketitle
 \begin{document}
 
 \begin{titlepage}
+\makeatletter
+\begin{center}
+	\textsc{Erasmus University Rotterdam}
+	\par \textsc{Erasmus School of Economics}
+	\par Master Thesis \program
 
-\title{     
-
-\normalsize \textsc{Seminar in Financial Case Studies}
-		\\ [2.0cm]
-		 \\
-		\LARGE \textbf{Comparative Analysis of Probability of Default Modelling under Bayesian and Frequentist Approaches: A (Reverse) Stress Testing Perspective} % Bayesian vs. Frequentist Methods in Probability of Default Modelling and (Reverse) Stress Testing
-		\\ [0.5cm]
-		\normalsize \today \vspace*{5\baselineskip}}
-
-\date{}
-
-\author{    
-		Group D: \\
-		Chenyan Yang, Liu Nuo Su, \\
-		Willem Castelijns, Cenchen Zhao, \\ 
-		\\ 
-		Erasmus University Rotterdam \\ [5.0cm]
-		}
-
-\maketitle
-
-\thispagestyle{empty}
+	\vfill \hrule height .08em \bigskip
+	\par\huge\@title\bigskip
+	\par\Large\@author\,(\studentnumber)\bigskip
+	\hrule height .08em\normalsize
+	
+	\vfill
+	\includegraphics[width=\textwidth,height=0.15\textheight,keepaspectratio]{eur} % The EUR logo, but this could also be another image
+	\vfill
+	
+	\begin{tabular}{ll}
+		\toprule
+		Supervisor: & \supervisor\\
+		Second assessor: & \secondassesor\\
+		Date final version: & \@date\\
+		\bottomrule
+	\end{tabular}
+	
+	\vfill
+	The views stated in this thesis are those of the author and not necessarily those of the supervisor, second assessor, Erasmus School of Economics or Erasmus University Rotterdam.
+\end{center}
+\makeatother
 \end{titlepage}
 
-
-\maketitle
-
 \tableofcontents
-
 \pagebreak
-
+%\begin{abstract}
+%\end{abstract}
 \input{1_introduction}
+
 \input{2_literature_review}
+
 \input{3_data}
+
 \input{4_methods}
-%\input{5_results}
-%\input{6_conclusion}
-
-
-
-%Pre-variable selection: Logistic regression: Correlation matrix, Stepwise regression based on AIC, BIC; ML: LASSO; Principle Component Analysis
-
-%Data: Macro variables of every country, same as for the stress scenario: GDP, unemployment rate, inflation
-
 
 \newpage
 \bibliographystyle{apacite}
 \bibliography{bibliography}
-\newpage
-%\input{Appendix}
-
 
 \end{document}
