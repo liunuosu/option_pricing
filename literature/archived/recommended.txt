@@ -1,0 +1,71 @@
+After the initial meeting, it became very clear to me that the pre-proposal is very inadequate. 
+The professor expected something more, and even something closer to 0DTE's.
+
+READ EVERY PAPER
+MAKE The LITERATURE REVIEW
+
+MAKE A SHORT REVIEW FILE ON 0DTE's 
+
+WORK OUT THE METHODS
+SHE LIKES FORMULAS
+THE DETAILS ARE SO SO IMPORTANT
+DO WE WANT THE SMOOTHED? OR JUST THE RAW
+H-STEP AHEAD PREDICTIONS
+SHE DID NOT LIKE THE INDIVIDUAL STOCKS
+
+ONLY ONLY ONLY USE QUALITY JOURNALS!!!
+
+OVERVIEW OF PAPERS:
+CHARACTERISTICS / COVARIATES:
+BUCHNER AND KELLY 2022 - A FACTOR MODEL FOR OPTION RETURNS
+FREIRE AND KLEEN 2023 - EQUITY OPTIONS AND FIRM CHARACTERISTICS
+FREYBERGER ET AL 2020 - DISSECTING CHARACTERISTICS NONPARAMETRICALLY
+HORENSTEIN ET AL 2022 - COMMON FACTORS IN EQUITY OPTION RETURNS
+KELLY ET AL 2023 - DEEP LEARNING FROM IMPLIED VOLATILITY SURFACES
+ZHAN ET AL 2022 - OPTION RETURN PREDICTABILITY
+ZHEN ET AL 2022 - SUPP_ZHAN2022
+
+CORE PAPERS FOR THIS WORK:
+
+0DTE TRADING STRATEGIES
+0DTE OPTION PRICING
+
+HER PAPER 2X
+Neural Tangent Kernel in Implied Volatility Forecasting:
+A Nonlinear Functional Autoregression Approach
+Ying Chen* Maria Grith† Hannah L. H. Lai
+
+
+DEEP LEARNING FROM IMPLIED VOLATILITY SURFACES
+- BRYAN KELLY, BORIS KUZNETSOV, SEMYON MALAMUD, TENG ANDREA XU
+
+CAN A MACHINE CORRECT OPTION PRICING MODELS?
+- CAIO ALMEIDA, JIANQING FAN, GUSTAVO FREIRE AND FRANCESCA TANG
+
+TAIL RISK AND UNCERTAINTY
+ANDERSON2018_TAILRISK
+
+BERGER2020_RES
+
+THE JOURNAL OF FINANCE - 2002- COVAL
+THE JOURNAL OF FINANCE - 2004 - BOLLEN
+WP2023_JUNPAN_OPTIONIMPLIEDCRASHINDEX
+
+1. An assessment of how predictable ultra short-term IVs are, applying different machine learning methods (in the spirit of Gu, Kelly and Xiu, 2020) using a large
+set of covariates. The relative importance of different covariates can be analyzed.
+Investigating how predictability patterns compare to IVs of longer horizons would
+be interesting. Exploiting predictive information to construct profitable trading
+strategies would be another possibility.
+
+2. Arguably, the latent factors driving ultra short-term IVs are different from those
+driving the more well-studied long-horizon IVs. Modeling the factor structure of
+the options across maturities using Principal Component Analysis techniques or
+parametric factor models (Goncalves and Guidolin, 2006; Fran¸cois et al., 2022)
+would be an interesting venue to pursue. A nonlinear alternative, in the spirit of
+Gu, Kelly and Xiu (2021), would be to use Autoencoders
+
+3. Options contain forward-looking information about investors’ expectations of future
+market conditions. Therefore, ultra short-term IVs could be useful in predicting
+excess market returns or realized volatilities over daily horizons. Extracting this
+information using machine learning and comparing to popular prediction methods
+in the literature would be interesting.
