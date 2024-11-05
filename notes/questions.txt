@@ -1,0 +1,24 @@
+After completing the proposal, a few questions have popped up (add own answer to it later)
+1. After the data cleaning, where every observations with null implied volatility is
+removed, all 0DTE options that was in the dataset was omitted. It seems like optionmetrics
+is unable to calculate this implied volatility, but the trading volume for some 
+0DTE observations is not 0. I am not sure if we can somehow obtain this implied volatility,
+as the data from option metrics is end-of-day, and not intra-day. I think the omitting
+the 0DTE is unavoidable
+
+2. The value of the IV depends on the method one uses to extract it. OptionMetrics 
+applies an inversion of the Black-Scholes formula, can one assume that this IV is
+the 'correct' implied volatility? Papers in literature have skimmed over this part,
+and try to predict the IVs given by the data vendor. 
+
+3. There is an observation inbalance in the years of the dataset. The starting years 
+contain little observations, while the latter years are the most complete (contains
+all maturities considered). I don't think a smoother can solve this for the early 
+years, as some days only contain observations for a single maturity. My take is to
+omit the observations in the early years, is that reasonable?
+
+4. The papers I found in the literature lack a statistical test. To compare forecasts,
+the IVRSME or R-squared is taken, and the values between models are directly compared
+to each other. I found this peculiar, and was thinking whether we can apply a 
+statistical test here. I was wondering if a Diebold-Mariano test can be used in this 
+context? 
