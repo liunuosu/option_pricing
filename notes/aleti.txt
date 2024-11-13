@@ -1,0 +1,8 @@
+A paper about news and the efect on the stochastic discount factor of intraday returns:
+We find that news
+related to monetary policy and finance typically accounts for the largest portion
+of the variation in the SDF and the tangency portfolio risk premium, followed by news
+about international affairs and macroeconomic data. 
+We find that different news topics tend to affect different fundamental economic shocks
+perhaps surprisngly, we find that a large fraction of the monetary policy news that is
+priced is not covered by the tradtional monetary policy calendars
