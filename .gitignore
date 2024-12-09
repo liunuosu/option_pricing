@@ -1,0 +1,10 @@
+# Ignore the data, and archive folder and all its contents
+data/
+archive/
+literature/
+memos/
+miscellaneous/
+report/
+notes/
+submissions/
+github_pages/
