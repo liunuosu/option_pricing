@@ -1,2 +1,0 @@
-https://github.com/halcyon0811/implied-volatility-smirk-trading
-https://github.com/LSEG-API-Samples/Article.RD.Python.CalculatingImpliedVolatility/blob/main/Implied%20Volatility%20Using%20IPA%20p1_106.ipynb
