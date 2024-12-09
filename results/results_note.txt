@@ -1,0 +1,7 @@
+In the results, save the:
+
+IVRMSE
+R-squared
+total, and over time
+with every date
+

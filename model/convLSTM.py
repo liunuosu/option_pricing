@@ -1,6 +1,8 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras import layers
+from tensorflow import keras
 import tensorflow as tf
+from pathlib import Path
 
 def create_model(n_params, 
                  dropout, 

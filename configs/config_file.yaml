@@ -1,0 +1,20 @@
+data:
+  test_size: 20
+  validation_size: 10
+
+training:
+  filters: !!int 2
+  kernel_size: [2,3]
+  srides: 1
+  batch_size: !!int 1024
+  kernel_initializer: 'glorot_uniform'
+  recurrent_initializer: 'orthogonal'
+  patience: 15
+  epsilon: 0.5
+  random_state: 42
+
+model:
+  trunc: !!int 4  # truncation J>1. Refers to the number of neurons: J(J-1)/2
+  optimizer: adam
+  lr: !!float 1e-3
+  lamb: !!float 0.  # regularization parameter
