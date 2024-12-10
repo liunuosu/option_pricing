@@ -3,7 +3,7 @@ from utils import get_config, print_config
 import yaml
 import time
 from datetime import datetime
-
+from model import convLSTM
 
 
 def main(config_file):
@@ -15,6 +15,15 @@ def main(config_file):
     print('start:', timestamp)
     start_time = time.time()
 
+    # RUN MODEL HERE, input as x_train, y_train, and x_val, y_val!! (x_test, y_test)
+    # Must also have same input for the benchmarks
+
+    print("Done training")
+    #Retrieve the results, and write it out to the results folder
+    # we must get: total R-squared and IVRMSE for validation set
+    # Total R-squared and IVRMSE for test set, and time R-sq and IVRMSE
+    
+    #After that, think about the extensions. Covariate and self-attention!
     end_time = time.time()
     elapsed_time = end_time - start_time
 
