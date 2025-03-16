@@ -1,7 +1,8 @@
-numpy
-pandas
-tensorflow
-scipy
-scikit-learn
-pyyaml
-matplotlib
+numpy==1.23.5
+pandas==2.2.3
+tensorflow==2.10.0
+scipy==1.13.1
+scikit-learn==1.5.2
+pyyaml==6.0.2
+matplotlib==3.10.0
+python_version=="3.10.13"
