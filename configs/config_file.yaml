@@ -8,6 +8,7 @@ training:
   covariates: None
 
 model:
+  run: 'long_ttm'
   filters: !!int 2
   kernel_size: [2,2]
   strides: 1
@@ -15,6 +16,15 @@ model:
   recurrent_initializer: 'orthogonal'
   optimizer: adam
   lr: !!float 1e-3
+  covariates: []
+    # - 'VIX' 
+    # - 'VVIX' 
+    # - 'SKEW' 
+    # - 'RVOL' 
+    # - 'TMS' 
+    # - 'CRS'
+    # - 'EPU' 
+    # - 'ADS'
 
 forecast:
   h_step: !!int 1
