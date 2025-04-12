@@ -16,15 +16,15 @@ model:
   recurrent_initializer: 'orthogonal'
   optimizer: adam
   lr: !!float 1e-3
-  covariates: []
-    # - 'VIX' 
-    # - 'VVIX' 
-    # - 'SKEW' 
-    # - 'RVOL' 
-    # - 'TMS' 
-    # - 'CRS'
-    # - 'EPU' 
-    # - 'ADS'
+  covariates: #[]
+    - 'VIX' 
+    - 'VVIX' 
+    - 'SKEW' 
+    - 'RVOL' 
+    - 'TMS' 
+    - 'CRS'
+    - 'EPU' 
+    - 'ADS'
 
 forecast:
   h_step: !!int 1
