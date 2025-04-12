@@ -8,7 +8,7 @@ training:
   covariates: None
 
 model:
-  run: 'long_ttm'
+  run: 'short_ttm'
   option: 'put' #put, call, or both
   filters: !!int 2
   kernel_size: [2,2]
