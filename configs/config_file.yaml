@@ -8,7 +8,7 @@ training:
   covariates: None
 
 model:
-  run: 'short_ttm'
+  run: 'long_ttm'
   option: 'put' #put, call, or both
   filters: !!int 2
   kernel_size: [2,2]
@@ -17,15 +17,15 @@ model:
   recurrent_initializer: 'orthogonal'
   optimizer: adam
   lr: !!float 1e-3
-  covariates: #[]
-    - 'VIX' 
-    - 'VVIX' 
-    - 'SKEW' 
-    - 'RVOL' 
-    - 'TMS' 
-    - 'CRS'
-    - 'EPU' 
-    - 'ADS'
+  covariates: []
+    # - 'VIX' 
+    # - 'VVIX' 
+    # - 'SKEW' 
+    # - 'RVOL' 
+    # - 'TMS' 
+    # - 'CRS'
+    # - 'EPU' 
+    # - 'ADS'
 
 forecast:
   h_step: !!int 1 #[1, 5, 21]
