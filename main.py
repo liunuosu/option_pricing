@@ -1,5 +1,6 @@
 import pandas as pd 
 from utils import get_config, print_config
+from utils.dataloader import load_data, frame_to_numpy
 import yaml
 import time
 from datetime import datetime
