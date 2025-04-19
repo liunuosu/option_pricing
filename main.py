@@ -6,6 +6,7 @@ import yaml
 import time
 from datetime import datetime
 from model.cov_convlstm import CovConvLSTM
+from model.convlstm import ConvLSTM
 from pathlib import Path
 import os
 
@@ -46,7 +47,11 @@ def main(config_file):
     # First just make the code work for covariates too
     print("Initializing and training model")
     if not full_train:
-        conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
+        if covariate_columns is not None:
+            conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
+        else:
+            conv_lstm = ConvLSTM(x_iv_train, target_train, x_iv_val, target_val, config_file)
+
         conv_lstm.compile()
         best_epoch, best_loss, train_loss, val_loss = conv_lstm.fit()
 
@@ -74,7 +79,10 @@ def main(config_file):
         plot_loss(train_loss, val_loss)
         
     if full_train:
-        conv_lstm_test = CovConvLSTM(x_iv_train, x_cov_train, target_train, config=config_file)
+        if covariate_columns is not None:
+            conv_lstm_test = CovConvLSTM(x_iv_train, x_cov_train, target_train, config=config_file)
+        else:
+            conv_lstm_test = ConvLSTM(x_iv_train, target_train, config=config_file)
         conv_lstm_test.compile()
         # somehow, it should retrieve the best epoch based on the validation combination
         num_epoch = 19
