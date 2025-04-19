@@ -61,7 +61,8 @@ def dataloader(run, option_type, smooth, full_train, covariate_columns, window_s
         x_iv_test, x_cov_test, target_test = create_rolling_window_dataset(IV_test_input, cov_test_input, window_size, h_step)
 
 
-        return x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, x_iv_test, x_cov_test, target_test
+        return x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, \
+            target_val, x_iv_test, x_cov_test, target_test, IV_val, IV_test
     else:   
         train_name = f"data/final/binned/train_full_{run}_{option_type}_{smooth}.csv"
         test_name = f"data/final/binned/test_{run}_{option_type}.csv"
@@ -79,7 +80,8 @@ def dataloader(run, option_type, smooth, full_train, covariate_columns, window_s
         cov_test_input = np.concatenate((cov_train[-window_size:], cov_test))
         x_iv_test, x_cov_test, target_test = create_rolling_window_dataset(IV_test_input, cov_test_input, window_size, h_step)
 
-        return x_iv_train, x_cov_train, target_train, x_iv_test, x_cov_test, target_test
+        return x_iv_train, x_cov_train, target_train, x_iv_test, \
+            x_cov_test, target_test, IV_test
 
 def load_data(run, option_type, covariate_columns, full_train=False):
         

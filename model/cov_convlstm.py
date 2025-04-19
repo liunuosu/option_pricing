@@ -20,7 +20,7 @@ class CovConvLSTM:
         self.target_val = y_iv_val
 
     def read_config(self, config):
-        self.window_size = config['training']['window_size']
+       
         self.patience = config['training']['patience']
         self.epsilon = config['training']['epsilon']
         self.batch_size = config['training']['batch_size']
@@ -29,12 +29,12 @@ class CovConvLSTM:
 
         self.learning_rate = config['model']['lr']
 
+        self.window_size = config['data']['window_size']
         self.run = config['data']['run']
         self.covariate_columns = config['data']['covariates']
         self.option_type = config['data']['option']
         self.smooth = config['data']['smooth']
-
-        self.h_step = config['forecast']['h_step']
+        self.h_step = config['data']['h_step']
 
     def compile(self):
 
@@ -82,14 +82,7 @@ class CovConvLSTM:
         val_loss = self.history.history.get('val_loss')
         return best_epoch, best_val_loss, train_loss, val_loss
     
-    def pred(self, x_iv_val, x_cov_val, x_iv_test, x_cov_test):
-        pred_val = self.model.predict([x_iv_val, x_cov_val])
-        pred_test = self.model.predict([x_iv_test, x_cov_test])
-        return pred_val, pred_test
+    def pred(self, x_iv, x_cov): 
+        pred = self.model.predict([x_iv, x_cov])
+        return pred
     
-    def compute_metrics(self, y_real, y_pred):
-        ivrmse = calculate_ivrmse_mask(y_real, y_pred)
-        ivrmse_h = calculate_ivrmse_mask(y_real, y_pred, all_points=True)
-        r_oos = calculate_r_oos_mask(y_real, y_pred)
-        r_oos_h = calculate_r_oos_mask(y_real, y_pred, all_points=True)
-        return ivrmse, ivrmse_h, r_oos, r_oos_h

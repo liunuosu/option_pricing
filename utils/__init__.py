@@ -1,10 +1,10 @@
 import yaml
 from pathlib import Path
-from metrics import calculate_ivrmse, calculate_r_oos
+from metrics import calculate_ivrmse_mask, calculate_r_oos_mask
 import numpy as np
 
-def get_config():
-    with(open(Path("configs", "config_file.yaml"))) as config_file:
+def get_config(config_name):
+    with(open(Path("configs", config_name))) as config_file:
         config = yaml.load(config_file, Loader=yaml.FullLoader)
     return config
 
@@ -13,14 +13,14 @@ def print_config(config):
         print(branch_name +':', config[branch_name])
         
 def get_results(y_real, y_pred):
-    ivrmse = calculate_ivrmse(y_real, y_pred)
-    ivrmse_h = calculate_ivrmse(y_real, y_pred, all_points=True)
-    r_oos = calculate_r_oos(y_real, y_pred)
-    r_oos_h = calculate_r_oos(y_real, y_pred)
+    ivrmse = calculate_ivrmse_mask(y_real, y_pred)
+    ivrmse_h = calculate_ivrmse_mask(y_real, y_pred, all_points=True)
+    r_oos = calculate_r_oos_mask(y_real, y_pred)
+    r_oos_h = calculate_r_oos_mask(y_real, y_pred, all_points=True)
 
     return ivrmse, ivrmse_h, r_oos, r_oos_h
 
-def write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, surface, surface_pred, window_size, h_step):
+def write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, surface, surface_pred, covariate_columns, option_type, smooth, window_size, h_step):
 
     ivrmse_path = folder_path / Path("ivrmse")
     r_oos_path = folder_path / Path("r_oos")
@@ -47,9 +47,12 @@ def write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, surface, surfac
     if not surface_pred_path.exists():
         surface_pred_path.mkdir(parents=True, exist_ok=True)
 
-    np.save(ivrmse_path / f"{window_size}_{h_step}.npy", ivrmse)
-    np.save(r_oos_path / f"{window_size}_{h_step}.npy", r_oos)
-    np.save(ivrmse_h_path / f"{window_size}_{h_step}.npy", ivrmse_h)
-    np.save(r_oos_h_path / f"{window_size}_{h_step}.npy", r_oos_h)
-    np.save(surface_path/ f"{window_size}_{h_step}.npy", surface)
-    np.save(surface_pred_path / f"{window_size}_{h_step}.npy", surface_pred)
+    cov = ""
+    for i in covariate_columns:
+        cov = cov+ "_" +i
+    np.save(ivrmse_path / f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", ivrmse)
+    np.save(r_oos_path / f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", r_oos)
+    np.save(ivrmse_h_path / f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", ivrmse_h)
+    np.save(r_oos_h_path / f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", r_oos_h)
+    np.save(surface_path/ f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", surface)
+    np.save(surface_pred_path / f"{option_type}_smooth_{smooth}_ws_{window_size}_h_{h_step}{cov}.npy", surface_pred)

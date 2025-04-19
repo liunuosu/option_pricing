@@ -1,5 +1,5 @@
 training:
-  window_size: 21
+  
   batch_size: !!int 32
   seed: !!int 71298
   patience: 15
@@ -12,6 +12,8 @@ data:
   option: 'call' #put, call, or both
   smooth: true
   full_train: false
+  window_size: 21
+  h_step: !!int 1 #[1, 5, 21]
   covariates: 
   - 'VIX' 
   - 'VVIX' 
@@ -29,6 +31,3 @@ model:
   kernel_initializer: 'glorot_uniform'
   recurrent_initializer: 'orthogonal'
   lr: !!float 1e-3
-
-forecast:
-  h_step: !!int 1 #[1, 5, 21]
