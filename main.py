@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from model.cov_convlstm import CovConvLSTM
 from pathlib import Path
+import os
 
 def main(config_file):
     # print all information before starting the run
@@ -54,13 +55,19 @@ def main(config_file):
         print(f"Time taken to train model: {elapsed_time:.2f} seconds")
         print(f"Best Epoch: {best_epoch}, best loss: {best_loss:.6f}")
         
-        pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
         folder_path = Path(f"results/validation_{run}")
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], pred_val, covariate_columns, option_type, smooth, window_size, h_step)
+        
+        folder_path = Path(f"results/test_{run}")
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
         pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
-        folder_path = Path(f"results/test_{run}")
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
 
@@ -69,13 +76,17 @@ def main(config_file):
     if full_train:
         conv_lstm_test = CovConvLSTM(x_iv_train, x_cov_train, target_train, config=config_file)
         conv_lstm_test.compile()
-        conv_lstm_test.fit_test()
+        # somehow, it should retrieve the best epoch based on the validation combination
+        num_epoch = 19
+        conv_lstm_test.fit_test(num_epoch)
 
-        pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
         folder_path = Path(f"results/test_full_{run}")
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        pred_test = conv_lstm_test.pred(x_iv_test, x_cov_test)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
-
 
 if __name__ == "__main__":
     config_name = 'config_file_covs.yaml'

@@ -20,7 +20,8 @@ def get_results(y_real, y_pred):
 
     return ivrmse, ivrmse_h, r_oos, r_oos_h
 
-def write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, surface, surface_pred, covariate_columns, option_type, smooth, window_size, h_step):
+def write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, surface, \
+                   surface_pred, covariate_columns, option_type, smooth, window_size, h_step):
 
     ivrmse_path = folder_path / Path("ivrmse")
     r_oos_path = folder_path / Path("r_oos")

@@ -11,7 +11,7 @@ data:
   run: 'short_ttm'
   option: 'call' #put, call, or both
   smooth: true
-  full_train: false
+  full_train: true
   window_size: 21
   h_step: !!int 1 #[1, 5, 21]
   covariates: 

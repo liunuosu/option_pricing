@@ -82,9 +82,9 @@ class CovConvLSTM:
         val_loss = self.history.history.get('val_loss')
         return best_epoch, best_val_loss, train_loss, val_loss
     
-    def fit_test(self):
+    def fit_test(self, num_epoch):
         self.model.fit([self.x_iv_train, self.x_cov_train], self.target_train,
-                epochs=self.epochs, batch_size=self.batch_size, shuffle=False)
+                epochs=num_epoch, batch_size=self.batch_size, shuffle=False)
     
     def pred(self, x_iv, x_cov): 
         pred = self.model.predict([x_iv, x_cov])
