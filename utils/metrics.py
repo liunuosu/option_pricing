@@ -21,3 +21,34 @@ def calculate_r_oos(y_true, y_pred, all_points=False):
         ss_tot = tf.reduce_sum(tf.square(y_true - mean_IV), axis=[1, 2])
         r2 = 1 - ss_res/ss_tot
     return r2.numpy()
+
+def calculate_ivrmse_mask(y_true, y_pred, all_points=False):
+    mask = tf.cast(tf.not_equal(y_true, 0.0), tf.double)
+    squared_diff = tf.square(y_true - y_pred) * mask
+    
+    if not all_points:
+        mean = tf.reduce_sum(squared_diff) / tf.reduce_sum(mask)
+        ivrmse = tf.sqrt(mean)
+    else:
+        mean = tf.reduce_sum(squared_diff, axis=[1,2]) / tf.reduce_sum(mask, axis=[1,2])
+        ivrmse = tf.sqrt(mean)
+
+    return ivrmse.numpy()
+
+def calculate_r_oos_mask(y_true, y_pred, all_points=False):
+
+    mask = tf.cast(y_true > 0, tf.double)
+
+    if not all_points:
+        ss_res = tf.reduce_sum(tf.square(y_true - y_pred) * mask)
+
+        mean_IV = tf.reduce_sum(y_true * mask, axis = [1, 2], keepdims=True) / tf.reduce_sum(mask, axis=[1, 2], keepdims=True)
+        ss_tot = tf.reduce_sum(tf.square(y_true - mean_IV) * mask)
+        r2 = 1 - ss_res/ss_tot
+    else:
+        ss_res = tf.reduce_sum(tf.square(y_true - y_pred)* mask, axis=[1, 2])
+        mean_IV = tf.reduce_sum(y_true * mask, axis = [1, 2], keepdims=True) / tf.reduce_sum(mask, axis=[1, 2], keepdims=True)
+        ss_tot = tf.reduce_sum(tf.square(y_true - mean_IV) * mask, axis=[1, 2])
+        r2 = 1 - ss_res/ss_tot
+    return r2.numpy()
+

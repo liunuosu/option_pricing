@@ -3,6 +3,7 @@ from tensorflow.keras import layers
 from tensorflow import keras
 import tensorflow as tf
 from pathlib import Path
+from utils.loss import masked_mse
 
 def create_model(n_params, 
                  dropout, 
