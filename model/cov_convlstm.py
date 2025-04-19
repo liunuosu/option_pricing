@@ -25,13 +25,15 @@ class CovConvLSTM:
         self.epsilon = config['training']['epsilon']
         self.batch_size = config['training']['batch_size']
         self.epochs = config['training']['epochs']
-        self.smooth = config['training']['smooth']
         self.seed = config['training']['seed']
 
-        self.run = config['model']['run']
         self.learning_rate = config['model']['lr']
-        self.covariate_columns = config['model']['covariates']
-        self.option_type = config['model']['option']
+
+        self.run = config['data']['run']
+        self.covariate_columns = config['data']['covariates']
+        self.option_type = config['data']['option']
+        self.smooth = config['data']['smooth']
+
         self.h_step = config['forecast']['h_step']
 
     def compile(self):
