@@ -6,7 +6,8 @@ training:
   random_state: 42
   epochs: 100
   covariates: None
-  smooth: True
+  smooth: true
+  full_train: false
 
 model:
   run: 'long_ttm'
