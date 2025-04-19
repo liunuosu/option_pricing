@@ -24,7 +24,7 @@ def main(config_file):
     full_train = data_config["full_train"]
     covariate_columns = data_config["covariates"]
     window_size = data_config['window_size']
-    h_step = data_config['h']
+    h_step = data_config['h_step']
 
     temporary_map = 'data/final/binned'
 
