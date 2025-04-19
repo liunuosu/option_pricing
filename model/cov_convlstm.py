@@ -40,7 +40,7 @@ class CovConvLSTM:
     def compile(self):
 
         time_steps = self.window_size
-        _, height, width, _ = self.x_iv_train.shape
+        _, window, height, width, _ = self.x_iv_train.shape
         # height = len(data_train['moneyness'].unique())
         # width = len(data_train['maturity'].unique())
         num_covariates = len(self.covariate_columns)
@@ -76,9 +76,8 @@ class CovConvLSTM:
                 callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                             patience=self.patience,
                                                             mode='min')])
-        best_epoch = int(np.argmin(self.history.history['val_loss']))
+        best_epoch = int(np.argmin(self.history.history['val_loss'])) + 1
         best_val_loss = self.history.history['val_loss'][best_epoch]
-        print(f"Best Epoch: {best_epoch + 1}, Validation Loss: {best_val_loss:.6f}")
         train_loss = self.history.history['loss']
         val_loss = self.history.history.get('val_loss')
         return best_epoch, best_val_loss, train_loss, val_loss

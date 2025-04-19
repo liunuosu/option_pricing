@@ -8,7 +8,7 @@ training:
   epochs: 100
   
 data:
-  run: 'long_ttm'
+  run: 'short_ttm'
   option: 'call' #put, call, or both
   smooth: true
   full_train: false

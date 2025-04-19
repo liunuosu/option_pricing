@@ -22,7 +22,7 @@ def retrieve_data(run, filename, folder_path, raw, covar_df, smooth=False):
         
         moneyness_grid = np.arange(0.80, 1.21, 0.05)
         data = bin_avg(df, moneyness_grid, train=smooth)
-        data.to_csv(folder_path / Path(filename))
+        data.to_csv(filename)
     
     data['date'] = pd.to_datetime(data['date'])
     data = pd.merge(data, covar_df, on='date', how='left')

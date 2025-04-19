@@ -1,6 +1,6 @@
 import yaml
 from pathlib import Path
-from metrics import calculate_ivrmse_mask, calculate_r_oos_mask
+from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
 import numpy as np
 
 def get_config(config_name):
