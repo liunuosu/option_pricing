@@ -8,10 +8,10 @@ training:
   epochs: 100
   
 data:
-  run: 'short_ttm'
+  run: 'long_ttm'
   option: 'call' #put, call, or both
   smooth: true
-  full_train: true
+  full_train: false
   window_size: 21
   h_step: !!int 1 #[1, 5, 21]
   covariates: 
