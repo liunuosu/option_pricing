@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential, Model
 from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
-from keras.layers import Masking
+from keras.layers import Masking, InputLayer
 import yaml
 from utils.loss import masked_mse
 from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
@@ -42,27 +42,29 @@ class ConvLSTM:
         channels = 1 
         # height = len(data_train['moneyness'].unique())
         # width = len(data_train['maturity'].unique())
-        model = Sequential()
-
+        self.model = Sequential()
+        self.model.add(InputLayer(input_shape=(time_steps, height, width, channels)))
+        self.model.add(Masking(mask_value=0.0))
+        # self.model.add(Masking(mask_value=0.0))
         # ConvLSTM2D expects 5D input: (batch, time, height, width, channels)
-        model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
-                            padding='same', return_sequences=True,
-                            input_shape=(time_steps, height, width, channels)))
-        model.add(BatchNormalization())
+        self.model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
+                            padding='same', return_sequences=True
+                            ))
+        self.model.add(BatchNormalization())
 
-        model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
+        self.model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
                             padding='same', return_sequences=False))
-        model.add(BatchNormalization())
+        self.model.add(BatchNormalization())
 
         # Final 3D convolution to map to the next frame
-        model.add(tf.keras.layers.Conv2D(filters=1, kernel_size=(1, 1),
+        self.model.add(tf.keras.layers.Conv2D(filters=1, kernel_size=(1, 1),
                                         activation='sigmoid', padding='same'))
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate, epsilon=self.epsilon)
-        model.compile(loss=masked_mse, optimizer=optimizer)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate, epsilon=self.epsilon)
+        self.model.compile(loss=masked_mse, optimizer=self.optimizer)
 
         # Double check the architecture, and the activaiton function
-        print(model.summary())
+        print(self.model.summary())
 
 
     def fit(self):

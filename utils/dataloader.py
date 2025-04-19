@@ -25,7 +25,8 @@ def retrieve_data(run, filename, folder_path, raw, covar_df, smooth=False):
         data.to_csv(filename)
     
     data['date'] = pd.to_datetime(data['date'])
-    data = pd.merge(data, covar_df, on='date', how='left')
+    if covar_df is not None:
+        data = pd.merge(data, covar_df, on='date', how='left')
     data = data.dropna()
 
     return data
@@ -106,7 +107,7 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 data_val[data_val['cp_flag']=='C']
                 data_test[data_test['cp_flag']=='C']
 
-            if covariate_columns is not None:
+            if covariate_columns:
                 covar_df = pd.read_excel('data/final/covariates/covariates_train.xlsx')
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation.xlsx')
 
@@ -114,6 +115,8 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 covar_df_val = covar_df_val.rename(columns={'Date':'date'})
                 covar_df = covar_df[['date'] + covariate_columns]
                 covar_df_val = covar_df_val[['date'] + covariate_columns]
+            else:
+                covar_df = None
 
         elif run == 'long_ttm':
             data_train = pd.read_csv('data/final/smoothed/data_train_long.csv')
@@ -129,7 +132,7 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 data_val[data_val['cp_flag']=='C']
                 data_test[data_test['cp_flag']=='C']
                 
-            if covariate_columns is not None:
+            if covariate_columns:
                 covar_df = pd.read_excel('data/final/covariates/covariates_train_long.xlsx')
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation_long.xlsx')
 
@@ -137,6 +140,8 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 covar_df_val = covar_df_val.rename(columns={'Date':'date'})
                 covar_df = covar_df[['date'] + covariate_columns]
                 covar_df_val = covar_df_val[['date'] + covariate_columns]
+            else:
+                covar_df = None
         
         else:
             print('Select a dataset')
@@ -154,10 +159,12 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 data_train[data_train['cp_flag']=='C']
                 data_test[data_test['cp_flag']=='C']
 
-            if covariate_columns is not None:
+            if covariate_columns:
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation.xlsx')
                 covar_df_val = covar_df_val.rename(columns={'Date':'date'})
                 covar_df_val = covar_df_val[['date'] + covariate_columns]
+            else:
+                covar_df_val = None
 
         elif run == 'long_ttm':
             data_train = pd.read_csv('data/final/smoothed/data_train_val_long.csv')
@@ -170,10 +177,12 @@ def load_data(run, option_type, covariate_columns, full_train=False):
                 data_train[data_train['cp_flag']=='C']
                 data_test[data_test['cp_flag']=='C']
                 
-            if covariate_columns is not None:
+            if covariate_columns:
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation_long.xlsx')
                 covar_df_val = covar_df_val.rename(columns={'Date':'date'})
                 covar_df_val = covar_df_val[['date'] + covariate_columns]
+            else:
+                covar_df_val = None
         
         else:
             print('Select a dataset')

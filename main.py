@@ -47,7 +47,7 @@ def main(config_file):
     # First just make the code work for covariates too
     print("Initializing and training model")
     if not full_train:
-        if covariate_columns is not None:
+        if covariate_columns:
             conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
         else:
             conv_lstm = ConvLSTM(x_iv_train, target_train, x_iv_val, target_val, config_file)
@@ -64,7 +64,10 @@ def main(config_file):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
+        if covariate_columns:
+            pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
+        else:
+            pred_val = conv_lstm.pred(x_iv_val)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], pred_val, covariate_columns, option_type, smooth, window_size, h_step)
         
@@ -72,14 +75,17 @@ def main(config_file):
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
+        if covariate_columns:
+            pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
+        else:
+            pred_test = conv_lstm.pred(x_iv_test)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
 
-        plot_loss(train_loss, val_loss)
+        # plot_loss(train_loss, val_loss)
         
     if full_train:
-        if covariate_columns is not None:
+        if covariate_columns:
             conv_lstm_test = CovConvLSTM(x_iv_train, x_cov_train, target_train, config=config_file)
         else:
             conv_lstm_test = ConvLSTM(x_iv_train, target_train, config=config_file)
@@ -91,14 +97,27 @@ def main(config_file):
         folder_path = Path(f"results/test_full_{run}")
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-
-        pred_test = conv_lstm_test.pred(x_iv_test, x_cov_test)
+        if covariate_columns:
+            pred_test = conv_lstm_test.pred(x_iv_test, x_cov_test)
+        else:
+            pred_test = conv_lstm_test.pred(x_iv_test)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
 
 if __name__ == "__main__":
     config_name = 'config_file_covs.yaml'
     config = get_config(config_name)
-    main(config)
+
+    for i in ['long_ttm', 'short_ttm']:
+        for j in ['call', 'put']:
+            for l in [5, 21, 63]:
+                for k in [1, 5, 10]:
+                    for m in [True, False]:
+                        config['data']['run'] = i
+                        config['data']['option'] = j
+                        config['data']['window_size'] = l
+                        config['data']['h_step'] = k
+                        config['data']['smooth'] = m
+                        main(config)
 
     
