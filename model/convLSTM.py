@@ -1,80 +1,88 @@
-from tensorflow.keras.models import Model
-from tensorflow.keras import layers
-from tensorflow import keras
 import tensorflow as tf
-from pathlib import Path
+from tensorflow import keras
+from keras.models import Sequential, Model
+from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
+from keras.layers import Masking
+import yaml
 from utils.loss import masked_mse
+from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
+import numpy as np
 
-def create_model(n_params, 
-                 dropout, 
-                 recurrent_dropout, 
-                 n_convlstm_layers = 2,
-                 hidden_activation =  tf.keras.activations.tanh, 
-                 optimizer = keras.optimizers.Adam()):
+class ConvLSTM:
 
-    # input layer
-    input_layer = layers.Input(shape= (None,len(expiries),len(params),1) )
+    def __init__(self, x_iv_train, y_iv_train, \
+                 x_iv_val=None, y_iv_val=None, config=None):
+        self.read_config(config) # Read the parameters and set the data
+        self.x_iv_train = x_iv_train
+        self.target_train = y_iv_train
+        self.x_iv_val = x_iv_val
+        self.target_val = y_iv_val
+
+    def read_config(self, config):
+       
+        self.patience = config['training']['patience']
+        self.epsilon = config['training']['epsilon']
+        self.batch_size = config['training']['batch_size']
+        self.epochs = config['training']['epochs']
+        self.seed = config['training']['seed']
+
+        self.learning_rate = config['model']['lr']
+
+        self.window_size = config['data']['window_size']
+        self.run = config['data']['run']
+        self.covariate_columns = config['data']['covariates']
+        self.option_type = config['data']['option']
+        self.smooth = config['data']['smooth']
+        self.h_step = config['data']['h_step']
+
+    def compile(self):
+
+        time_steps = self.window_size
+        _, window, height, width, _ = self.x_iv_train.shape
+        channels = 1 
+        # height = len(data_train['moneyness'].unique())
+        # width = len(data_train['maturity'].unique())
+        model = Sequential()
+
+        # ConvLSTM2D expects 5D input: (batch, time, height, width, channels)
+        model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
+                            padding='same', return_sequences=True,
+                            input_shape=(time_steps, height, width, channels)))
+        model.add(BatchNormalization())
+
+        model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
+                            padding='same', return_sequences=False))
+        model.add(BatchNormalization())
+
+        # Final 3D convolution to map to the next frame
+        model.add(tf.keras.layers.Conv2D(filters=1, kernel_size=(1, 1),
+                                        activation='sigmoid', padding='same'))
+
+        optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate, epsilon=self.epsilon)
+        model.compile(loss=masked_mse, optimizer=optimizer)
+
+        # Double check the architecture, and the activaiton function
+        print(model.summary())
+
+
+    def fit(self):
+        self.history = self.model.fit(self.x_iv_train, self.target_train,
+                validation_data=(self.x_iv_val, self.target_val),
+                epochs=self.epochs, batch_size=self.batch_size, shuffle=False,
+                callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                            patience=self.patience,
+                                                            mode='min')])
+        best_epoch = int(np.argmin(self.history.history['val_loss'])) + 1
+        best_val_loss = self.history.history['val_loss'][best_epoch]
+        train_loss = self.history.history['loss']
+        val_loss = self.history.history.get('val_loss')
+        return best_epoch, best_val_loss, train_loss, val_loss
     
-    # lstm layers
-    lstm = input_layer
-    for i in range( n_convlstm_layers ):
-        lstm =  layers.ConvLSTM2D( 
-            kernel_size= (1,1), 
-            filters=n_params, 
-            data_format= 'channels_last', 
-            return_sequences = i<n_convlstm_layers-1,
-            activation=hidden_activation,
-            padding = "same",
-            dropout=dropout, 
-            recurrent_dropout=recurrent_dropout
-        )( lstm )
-        lstm = layers.BatchNormalization()(lstm)    
-
-    output = layers.Conv2D(
-        filters=1, kernel_size=(1, 1), activation="linear", padding="same"
-    )( lstm )
-    output_layer = layers.Reshape( (len(expiries),len(params)) )(output)
-
-    # compile
-    model = Model( input_layer, output_layer )
-    model.compile(
-        loss= "MAE",
-        optimizer=optimizer, 
-    ) 
+    def fit_test(self, num_epoch):
+        self.model.fit(self.x_iv_train, self.target_train,
+                epochs=num_epoch, batch_size=self.batch_size, shuffle=False)
     
-    print(model.summary())
-    return model
-
-def train_model(model, 
-                dataset, 
-                verbose = True, 
-                save : "dir" = False,
-                training_kwarg_overwrites : "dict" = {} ):
+    def pred(self, x_iv): 
+        pred = self.model.predict(x_iv)
+        return pred
     
-    # train until we run out of improvement
-    callbacks = [
-        keras.callbacks.ReduceLROnPlateau(monitor="val_loss", patience=5),
-        keras.callbacks.EarlyStopping(monitor="val_loss", patience=15),
-    ]
-    
-    # train model
-    training_kwargs = {
-        "x" : dataset["train"]["x_scaled"],
-        "y" : dataset["train"]["y_scaled"],
-        "epochs" : 200,
-        "batch_size" : 64,
-        "verbose" : verbose,
-        "validation_split" : 0.2,
-        "callbacks" : callbacks,
-    } 
-    training_kwargs.update(training_kwarg_overwrites)
-    train_hist = model.fit( **training_kwargs )
-    
-    if save:
-        Path(save).mkdir(parents=True, exist_ok=True) # make a home for the models
-        train_start, train_end = [ f( dataset["dates"]["train"] ) for f in (min,max) ]
-        model_name = "-".join( date.strftime("%Y%m%d") for date in [train_start, train_end] )
-        model.save( save+model_name )
-        
-    return model, train_hist
-
