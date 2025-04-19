@@ -6,10 +6,11 @@ training:
   random_state: 42
   epochs: 100
   covariates: None
+  smooth: True
 
 model:
-  run: 'short_ttm'
-  option: 'put' #put, call, or both
+  run: 'long_ttm'
+  option: 'call' #put, call, or both
   filters: !!int 2
   kernel_size: [2,2]
   strides: 1
