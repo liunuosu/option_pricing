@@ -44,27 +44,39 @@ def main(config_file):
 
     # First just make the code work for covariates too
     print("Initializing and training model")
-    conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
-    conv_lstm.compile()
-    best_epoch, best_loss, train_loss, val_loss = conv_lstm.fit()
-
-    end2 = time.time()
-    elapsed_time = end2- end_time
-    print(f"Time taken to train model: {elapsed_time:.2f} seconds")
-    print(f"Best epoch: {best_epoch}, best loss: {best_loss}")
-
     if not full_train:
+        conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
+        conv_lstm.compile()
+        best_epoch, best_loss, train_loss, val_loss = conv_lstm.fit()
+
+        end2 = time.time()
+        elapsed_time = end2- end_time
+        print(f"Time taken to train model: {elapsed_time:.2f} seconds")
+        print(f"Best epoch: {best_epoch}, best loss: {best_loss}")
+        
         pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
         folder_path = Path(f"results/validation_{run}")
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], pred_val, covariate_columns, option_type)
 
-    pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
-    folder_path = Path(f"results/test_{run}")
-    ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
-    write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type)
+        pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
+        folder_path = Path(f"results/test_{run}")
+        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
+        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type)
 
-    plot_loss(train_loss, val_loss)
+        plot_loss(train_loss, val_loss)
+        
+    if full_train:
+        conv_lstm_test = CovConvLSTM(x_iv_train, x_cov_train, target_train, config=config_file)
+        conv_lstm_test.compile()
+        conv_lstm_test.fit_test()
+
+        pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
+        folder_path = Path(f"results/test_full_{run}")
+        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
+        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type)
+
+
 if __name__ == "__main__":
     config_name = 'config_file_covs.yaml'
     config = get_config()
