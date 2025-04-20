@@ -27,8 +27,7 @@ class CovConvLSTM:
         self.batch_size = config['training']['batch_size']
         self.epochs = config['training']['epochs']
         self.seed = config['training']['seed']
-
-        self.learning_rate = config['model']['lr']
+        self.learning_rate = config['training']['lr']
 
         self.window_size = config['data']['window_size']
         self.run = config['data']['run']
@@ -36,6 +35,17 @@ class CovConvLSTM:
         self.option_type = config['data']['option']
         self.smooth = config['data']['smooth']
         self.h_step = config['data']['h_step']
+
+        self.filters = config['model']['filters'] # 16 32 64 128 filter within the conv2DLSTM layer
+        self.kernel_height = config['model']['kernel_height']
+        self.kernel_width = config['model']['kernel_width'] # 1 to 5 (maturity) mxn -> 9x5
+        self.num_layer = config['model']['num_layer'] # Any positive integer >0
+        self.strides_dim = config['model']['strides_dim'] #: !!int 1 # assumes strides to be same across the two dimensions 
+        self.kernel_initializer = config['model']['kernel_initializer'] 
+        self.recurrent_initializer = config['model']['recurrent_initializer']
+        self.padding = config['model']['padding']
+        self.conv_activation = config['model']['conv_activation']
+        self.recurrent_activation = config['model']['recurrent_activation']
 
     def compile(self):
 
@@ -49,9 +59,14 @@ class CovConvLSTM:
         
         iv_input = Input(shape=(time_steps, height, width, 1), name="iv_input")
         x_iv = Masking(mask_value=0.0)(iv_input)
-        x_iv = ConvLSTM2D(filters=64, kernel_size=(3, 3), padding='same', return_sequences=True)(iv_input)
-        x_iv = BatchNormalization()(x_iv)
-        x_iv = ConvLSTM2D(filters=64, kernel_size=(3, 3), padding='same', return_sequences=False)(x_iv)
+
+        for i in range(self.num_layer-1):
+            x_iv = ConvLSTM2D(filters=self.filters, kernel_size=(self.kernel_height, self.kernel_width),
+                            padding=self.padding, return_sequences=True)(iv_input)
+            x_iv = BatchNormalization()(x_iv)
+            
+        x_iv = ConvLSTM2D(filters=self.filters, kernel_size=(self.kernel_height, self.kernel_width), 
+                          padding=self.padding, return_sequences=False)(x_iv)
         x_iv = BatchNormalization()(x_iv)
 
         cov_input = Input(shape=(time_steps, num_covariates), name="cov_input")

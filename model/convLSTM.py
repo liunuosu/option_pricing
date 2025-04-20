@@ -19,14 +19,13 @@ class ConvLSTM:
         self.target_val = y_iv_val
 
     def read_config(self, config):
-       
+
         self.patience = config['training']['patience']
         self.epsilon = config['training']['epsilon']
         self.batch_size = config['training']['batch_size']
         self.epochs = config['training']['epochs']
         self.seed = config['training']['seed']
-
-        self.learning_rate = config['model']['lr']
+        self.learning_rate = config['training']['lr']
 
         self.window_size = config['data']['window_size']
         self.run = config['data']['run']
@@ -34,6 +33,17 @@ class ConvLSTM:
         self.option_type = config['data']['option']
         self.smooth = config['data']['smooth']
         self.h_step = config['data']['h_step']
+
+        self.filters = config['model']['filters'] # 16 32 64 128 filter within the conv2DLSTM layer
+        self.kernel_height = config['model']['kernel_height']
+        self.kernel_width = config['model']['kernel_width'] # 1 to 5 (maturity) mxn -> 9x5
+        self.num_layer = config['model']['num_layer'] # Any positive integer >0
+        self.strides_dim = config['model']['strides_dim'] #: !!int 1 # assumes strides to be same across the two dimensions 
+        self.kernel_initializer = config['model']['kernel_initializer'] 
+        self.recurrent_initializer = config['model']['recurrent_initializer']
+        self.padding = config['model']['padding']
+        self.conv_activation = config['model']['conv_activation']
+        self.recurrent_activation = config['model']['recurrent_activation']
 
     def compile(self):
 
@@ -47,13 +57,29 @@ class ConvLSTM:
         self.model.add(Masking(mask_value=0.0))
         # self.model.add(Masking(mask_value=0.0))
         # ConvLSTM2D expects 5D input: (batch, time, height, width, channels)
-        self.model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
-                            padding='same', return_sequences=True
-                            ))
-        self.model.add(BatchNormalization())
 
-        self.model.add(ConvLSTM2D(filters=64, kernel_size=(3, 3),
-                            padding='same', return_sequences=False))
+        for i in range(self.num_layer-1):
+            self.model.add(ConvLSTM2D(filters=self.filters, 
+                                      kernel_size=(self.kernel_height, self.kernel_width),
+                                      strides=(self.strides_dim, self.strides_dim),
+                                    padding=self.padding, 
+                                    return_sequences=True,
+                                    kernel_initializer=self.kernel_initializer,
+                                    recurrent_initializer=self.recurrent_initializer,
+                                    activation=self.conv_activation,
+                                    recurrent_activation=self.recurrent_activation
+                                ))
+            self.model.add(BatchNormalization())
+
+        self.model.add(ConvLSTM2D(filters=self.filters, 
+                                  kernel_size=(self.kernel_height, self.kernel_width),
+                                  strides=(self.strides_dim, self.strides_dim),
+                                  padding=self.padding, 
+                                  return_sequences=False,
+                                  kernel_initializer=self.kernel_initializer,
+                                  recurrent_initializer=self.recurrent_initializer,
+                                  activation=self.conv_activation,
+                                  recurrent_activation=self.recurrent_activation))
         self.model.add(BatchNormalization())
 
         # Final 3D convolution to map to the next frame

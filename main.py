@@ -42,7 +42,8 @@ def main(config_file):
     print("Done loading data")
     end_time = time.time()
     elapsed_time = end_time - start_time
-    print(f"Time taken to load data: {elapsed_time:.2f} seconds")
+    minutes, seconds = divmod(elapsed_time, 60)
+    print(f"Time taken to load data: {int(minutes)} minutes {seconds:.2f} seconds")
 
     # First just make the code work for covariates too
     print("Initializing and training model")
@@ -57,7 +58,8 @@ def main(config_file):
 
         end2 = time.time()
         elapsed_time = end2- end_time
-        print(f"Time taken to train model: {elapsed_time:.2f} seconds")
+        minutes, seconds = divmod(elapsed_time, 60)
+        print(f"Time taken to train model: {int(minutes)} minutes {seconds:.2f} seconds")
         print(f"Best Epoch: {best_epoch}, best loss: {best_loss:.6f}")
         
         folder_path = Path(f"results/validation_{run}")

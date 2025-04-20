@@ -1,11 +1,11 @@
 training:
-  
   batch_size: !!int 32
   seed: !!int 71298
   patience: 15
   epsilon: !!float 1e-6
   random_state: 42
   epochs: 100
+  lr: !!float 1e-3
   
 data:
   run: 'long_ttm'
@@ -30,4 +30,4 @@ model:
   strides: 1
   kernel_initializer: 'glorot_uniform'
   recurrent_initializer: 'orthogonal'
-  lr: !!float 1e-3
+ 
