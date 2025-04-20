@@ -5,6 +5,7 @@ training:
   epsilon: !!float 1e-6
   random_state: 42
   epochs: 100
+  lr: !!float 1e-3
   
 data:
   run: 'long_ttm'
@@ -32,6 +33,5 @@ model:
   kernel_initializer: 'glorot_uniform'
   recurrent_initializer: 'orthogonal'
   padding: 'same'
-  lr: !!float 1e-3
   conv_activation: 'tanh'
   recurrent_activation: 'sigmoid'

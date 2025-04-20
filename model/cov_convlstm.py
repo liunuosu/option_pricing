@@ -61,12 +61,26 @@ class CovConvLSTM:
         x_iv = Masking(mask_value=0.0)(iv_input)
 
         for i in range(self.num_layer-1):
-            x_iv = ConvLSTM2D(filters=self.filters, kernel_size=(self.kernel_height, self.kernel_width),
-                            padding=self.padding, return_sequences=True)(iv_input)
+            x_iv = ConvLSTM2D(filters=self.filters, 
+                                    kernel_size=(self.kernel_height, self.kernel_width),
+                                    strides=(self.strides_dim, self.strides_dim),
+                                    padding=self.padding, 
+                                    return_sequences=True,
+                                    kernel_initializer=self.kernel_initializer,
+                                    recurrent_initializer=self.recurrent_initializer,
+                                    activation=self.conv_activation,
+                                    recurrent_activation=self.recurrent_activation)(iv_input)
             x_iv = BatchNormalization()(x_iv)
-            
-        x_iv = ConvLSTM2D(filters=self.filters, kernel_size=(self.kernel_height, self.kernel_width), 
-                          padding=self.padding, return_sequences=False)(x_iv)
+
+        x_iv = ConvLSTM2D(filters=self.filters, 
+                                    kernel_size=(self.kernel_height, self.kernel_width),
+                                    strides=(self.strides_dim, self.strides_dim),
+                                    padding=self.padding, 
+                                    return_sequences=False,
+                                    kernel_initializer=self.kernel_initializer,
+                                    recurrent_initializer=self.recurrent_initializer,
+                                    activation=self.conv_activation,
+                                    recurrent_activation=self.recurrent_activation)(x_iv)
         x_iv = BatchNormalization()(x_iv)
 
         cov_input = Input(shape=(time_steps, num_covariates), name="cov_input")
