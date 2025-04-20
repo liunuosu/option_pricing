@@ -111,20 +111,20 @@ def main(config_file):
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
 if __name__ == "__main__":
-    config_name = 'config_file_covs.yaml'
-    config = get_config(config_name)
+    # config_name = 'config_file_covs.yaml'
+    # config = get_config(config_name)
 
-    for i in ['long_ttm', 'short_ttm']:
-        for j in ['call', 'put']:
-            for l in [5, 21]:
-                for k in [1, 5, 10]:
-                    for m in [True, False]:
-                        config['data']['run'] = i
-                        config['data']['option'] = j
-                        config['data']['window_size'] = l
-                        config['data']['h_step'] = k
-                        config['data']['smooth'] = m
-                        main(config)
+    # for i in ['long_ttm', 'short_ttm']:
+    #     for j in ['call', 'put']:
+    #         for l in [5, 21]:
+    #             for k in [1, 5, 10]:
+    #                 for m in [True, False]:
+    #                     config['data']['run'] = i
+    #                     config['data']['option'] = j
+    #                     config['data']['window_size'] = l
+    #                     config['data']['h_step'] = k
+    #                     config['data']['smooth'] = m
+    #                     main(config)
     
     config_original = 'config_file.yaml'
     config = get_config(config_original)
@@ -147,5 +147,19 @@ if __name__ == "__main__":
                                     config['model']['note'] = f"{n}_{o}_{p}"
                                     main(config)
 
+    config_name = 'config_file_covs2.yaml'
+    config = get_config(config_name)
+
+    for i in ['long_ttm', 'short_ttm']:
+        for j in ['call', 'put']:
+            for l in [5, 21]:
+                for k in [1, 5, 10]:
+                    for m in [True, False]:
+                        config['data']['run'] = i
+                        config['data']['option'] = j
+                        config['data']['window_size'] = l
+                        config['data']['h_step'] = k
+                        config['data']['smooth'] = m
+                        main(config)    
 
     

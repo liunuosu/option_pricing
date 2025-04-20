@@ -103,7 +103,7 @@ class ConvLSTM:
                                                             patience=self.patience,
                                                             mode='min')])
         best_epoch = int(np.argmin(self.history.history['val_loss'])) + 1
-        best_val_loss = self.history.history['val_loss'][best_epoch]
+        best_val_loss = self.history.history['val_loss'][best_epoch-1]
         train_loss = self.history.history['loss']
         val_loss = self.history.history.get('val_loss')
         return best_epoch, best_val_loss, train_loss, val_loss
