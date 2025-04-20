@@ -35,3 +35,4 @@ model:
   padding: 'same'
   conv_activation: 'tanh'
   recurrent_activation: 'sigmoid'
+  note: 'run1' # small note to be added in the writing of the results output

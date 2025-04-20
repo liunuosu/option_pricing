@@ -47,6 +47,7 @@ def main(config_file):
 
     # First just make the code work for covariates too
     print("Initializing and training model")
+    note = config_file['model']['note']
     if not full_train:
         if covariate_columns:
             conv_lstm = CovConvLSTM(x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, target_val, config_file)
@@ -71,7 +72,8 @@ def main(config_file):
         else:
             pred_val = conv_lstm.pred(x_iv_val)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val)
-        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], pred_val, covariate_columns, option_type, smooth, window_size, h_step)
+        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], 
+                      pred_val, covariate_columns, option_type, smooth, window_size, h_step, note)
         
         folder_path = Path(f"results/test_{run}")
         if not os.path.exists(folder_path):
@@ -82,7 +84,8 @@ def main(config_file):
         else:
             pred_test = conv_lstm.pred(x_iv_test)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
-        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
+        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
+                      pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
         # plot_loss(train_loss, val_loss)
         
@@ -104,7 +107,8 @@ def main(config_file):
         else:
             pred_test = conv_lstm_test.pred(x_iv_test)
         ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
-        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], pred_test, covariate_columns, option_type, smooth, window_size, h_step)
+        write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
+                      pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
 if __name__ == "__main__":
     config_name = 'config_file_covs.yaml'
@@ -140,6 +144,7 @@ if __name__ == "__main__":
                                     config['model']['num_layer'] = n
                                     config['model']['kernel_height'] = o
                                     config['model']['kernel_width'] = p
+                                    config['model']['note'] = f"{n}_{o}_{p}"
                                     main(config)
 
 
