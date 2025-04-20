@@ -48,6 +48,8 @@ class CovConvLSTM:
         self.recurrent_activation = config['model']['recurrent_activation']
 
     def compile(self):
+        # set seed before compiling
+        tf.random.set_seed(self.seed)
 
         time_steps = self.window_size
         _, window, height, width, _ = self.x_iv_train.shape
@@ -84,7 +86,7 @@ class CovConvLSTM:
         x_iv = BatchNormalization()(x_iv)
 
         cov_input = Input(shape=(time_steps, num_covariates), name="cov_input")
-
+        # LSTM layer for the covariates
         x_cov = LSTM(units=64, return_sequences=False)(cov_input)   # (batch_size, 64)
         x_cov = Dense(units=height * width, activation='relu')(x_cov)  
         x_cov = Reshape((height, width, 1))(x_cov)               # (batch_size, H, W, 1)

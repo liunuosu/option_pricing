@@ -46,6 +46,8 @@ class ConvLSTM:
         self.recurrent_activation = config['model']['recurrent_activation']
 
     def compile(self):
+        # set seed before compiling
+        tf.random.set_seed(self.seed)
 
         time_steps = self.window_size
         _, window, height, width, _ = self.x_iv_train.shape

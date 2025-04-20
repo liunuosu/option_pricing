@@ -93,7 +93,7 @@ def main(config_file):
             conv_lstm_test = ConvLSTM(x_iv_train, target_train, config=config_file)
         conv_lstm_test.compile()
         # somehow, it should retrieve the best epoch based on the validation combination
-        num_epoch = 19
+        num_epoch = 19 # This should be a variable, somewhere!!!!!!
         conv_lstm_test.fit_test(num_epoch)
 
         folder_path = Path(f"results/test_full_{run}")
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     for i in ['long_ttm', 'short_ttm']:
         for j in ['call', 'put']:
-            for l in [5, 21, 63]:
+            for l in [5, 21]:
                 for k in [1, 5, 10]:
                     for m in [True, False]:
                         config['data']['run'] = i
@@ -121,5 +121,26 @@ if __name__ == "__main__":
                         config['data']['h_step'] = k
                         config['data']['smooth'] = m
                         main(config)
+    
+    config_original = 'config_file.yaml'
+    config = get_config(config_original)
+    for i in ['long_ttm', 'short_ttm']:
+        for j in ['call', 'put']:
+            for l in [5, 21]:
+                for k in [1, 5, 10]:
+                    for m in [True, False]:
+                        for n in [1, 2, 3]:
+                            for o in [3, 5, 7]:
+                                for p in [2, 3, 4]:
+                                    config['data']['run'] = i
+                                    config['data']['option'] = j
+                                    config['data']['window_size'] = l
+                                    config['data']['h_step'] = k
+                                    config['data']['smooth'] = m
+                                    config['model']['num_layer'] = n
+                                    config['model']['kernel_height'] = o
+                                    config['model']['kernel_width'] = p
+                                    main(config)
+
 
     
