@@ -1,6 +1,6 @@
 import yaml
 from pathlib import Path
-from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
+from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask, calculate_r_oos_mask_train
 import numpy as np
 
 def get_config(config_name):
@@ -12,11 +12,11 @@ def print_config(config):
     for branch_name, branch_params in config.items():
         print(branch_name +':', config[branch_name])
         
-def get_results(y_real, y_pred):
+def get_results(y_real, y_pred, y_train):
     ivrmse = calculate_ivrmse_mask(y_real, y_pred)
     ivrmse_h = calculate_ivrmse_mask(y_real, y_pred, all_points=True)
-    r_oos = calculate_r_oos_mask(y_real, y_pred)
-    r_oos_h = calculate_r_oos_mask(y_real, y_pred, all_points=True)
+    r_oos = calculate_r_oos_mask_train(y_real, y_pred, y_train)
+    r_oos_h = calculate_r_oos_mask_train(y_real, y_pred, y_train, all_points=True)
 
     return ivrmse, ivrmse_h, r_oos, r_oos_h
 

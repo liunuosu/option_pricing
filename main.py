@@ -35,11 +35,13 @@ def main(config_file):
     
     if not full_train:
         x_iv_train, x_cov_train, target_train, x_iv_val, x_cov_val, \
-            target_val, x_iv_test, x_cov_test, target_test, IV_val, IV_test = \
-                dataloader(run, option_type, smooth, full_train, covariate_columns, window_size, h_step, folder_path=temporary_map)
+            target_val, x_iv_test, x_cov_test, target_test, IV_train, IV_val, IV_test = \
+                dataloader(run, option_type, smooth, full_train, covariate_columns, window_size, 
+                           h_step, folder_path=temporary_map)
     else:
-        x_iv_train, x_cov_train, target_train, x_iv_test, x_cov_test, target_test, IV_test = \
-            dataloader(run, option_type, smooth, full_train, covariate_columns, window_size, h_step, folder_path=temporary_map)
+        x_iv_train, x_cov_train, target_train, x_iv_test, x_cov_test, target_test, IV_train, IV_test = \
+            dataloader(run, option_type, smooth, full_train, covariate_columns, window_size, h_step, 
+                       folder_path=temporary_map)
     print("Done loading data")
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -72,7 +74,7 @@ def main(config_file):
             pred_val = conv_lstm.pred(x_iv_val, x_cov_val)
         else:
             pred_val = conv_lstm.pred(x_iv_val)
-        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val)
+        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_val[h_step-1:], pred_val, IV_train)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_val[h_step-1:], 
                       pred_val, covariate_columns, option_type, smooth, window_size, h_step, note)
         
@@ -84,7 +86,7 @@ def main(config_file):
             pred_test = conv_lstm.pred(x_iv_test, x_cov_test)
         else:
             pred_test = conv_lstm.pred(x_iv_test)
-        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
+        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test, IV_train)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
         
@@ -109,7 +111,7 @@ def main(config_file):
             pred_test = conv_lstm_test.pred(x_iv_test, x_cov_test)
         else:
             pred_test = conv_lstm_test.pred(x_iv_test)
-        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test)
+        ivrmse, ivrmse_h, r_oos, r_oos_h = get_results(IV_test[h_step-1:], pred_test, IV_train)
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
