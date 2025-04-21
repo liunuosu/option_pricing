@@ -240,6 +240,9 @@ def frame_to_numpy(data, covariate_cols=None):
     maturity_values = np.sort(data['maturity'].unique())
     maturity_to_idx = {mat: i for i, mat in enumerate(maturity_values)}
 
+    moneyness_values = np.sort(data['moneyness'].unique())
+    moneyness_to_idx = {mon: i for i, mon in enumerate(moneyness_values)}
+
     time_steps = len(time_step_index)
     money_dim = len(data['moneyness'].unique())
     ttm_dim = len(maturity_values)
@@ -250,7 +253,7 @@ def frame_to_numpy(data, covariate_cols=None):
 
     for idx, row in data.iterrows():
         time_step_idx = row['time_step_idx']
-        height = int(row['moneyness']) - 1 
+        height = moneyness_to_idx[row['moneyness']]
         width = maturity_to_idx[row['maturity']]
         value = row['impl_volatility']
         IV_array[time_step_idx, height, width, 0] = value

@@ -9,11 +9,12 @@ from model.cov_convlstm import CovConvLSTM
 from model.convlstm import ConvLSTM
 from pathlib import Path
 import os
+import numpy as np
 
-def main(config_file):
+def main(config):
     # print all information before starting the run
     print("Configuration Parameters:")
-    print_config(config_file)
+    print_config(config)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     print('start:', timestamp)
     start_time = time.time()
@@ -88,6 +89,8 @@ def main(config_file):
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
         # plot_loss(train_loss, val_loss)
+        np.save(os.path.join("results", f"train_loss.npy_{run}_{option_type}_{note}"), train_loss)
+        np.save(os.path.join("results", f"val_loss.npy_{run}_{option_type}_{note}"), val_loss)
         
     if full_train:
         if covariate_columns:
@@ -111,41 +114,42 @@ def main(config_file):
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
 if __name__ == "__main__":
-    config_name = 'config_file_covs.yaml'
-    config = get_config(config_name)
+    # config_name = 'config_file_covs.yaml'
+    # config = get_config(config_name)
 
-    for i in ['long_ttm', 'short_ttm']:
-        for j in ['call', 'put']:
-            for l in [5, 21]:
-                for k in [1, 5, 10]:
-                    for m in [True, False]:
-                        config['data']['run'] = i
-                        config['data']['option'] = j
-                        config['data']['window_size'] = l
-                        config['data']['h_step'] = k
-                        config['data']['smooth'] = m
-                        main(config)
+    # for i in ['long_ttm', 'short_ttm']:
+    #     for j in ['call', 'put']:
+    #         for l in [5, 21]:
+    #             for k in [1, 5, 10]:
+    #                 for m in [True, False]:
+    #                     config['data']['run'] = i
+    #                     config['data']['option'] = j
+    #                     config['data']['window_size'] = l
+    #                     config['data']['h_step'] = k
+    #                     config['data']['smooth'] = m
+    #                     main(config)
     
     config_original = 'config_file.yaml'
     config = get_config(config_original)
-    for i in ['long_ttm', 'short_ttm']:
-        for j in ['call', 'put']:
-            for l in [5, 21]:
-                for k in [1, 5, 10]:
-                    for m in [True, False]:
-                        for n in [1, 2, 3]:
-                            for o in [3, 5, 7]:
-                                for p in [2, 3, 4]:
-                                    config['data']['run'] = i
-                                    config['data']['option'] = j
-                                    config['data']['window_size'] = l
-                                    config['data']['h_step'] = k
-                                    config['data']['smooth'] = m
-                                    config['model']['num_layer'] = n
-                                    config['model']['kernel_height'] = o
-                                    config['model']['kernel_width'] = p
-                                    config['model']['note'] = f"{n}_{o}_{p}"
-                                    main(config)
+    # for i in ['long_ttm', 'short_ttm']:
+    #     for j in ['call', 'put']:
+    #         for l in [5, 21]:
+    #             for k in [1, 5, 10]:
+    #                 for m in [True, False]:
+    #                     for n in [1, 2, 3]:
+    #                         for o in [3, 5, 7]:
+    #                             for p in [2, 3, 4]:
+    #                                 config['data']['run'] = i
+    #                                 config['data']['option'] = j
+    #                                 config['data']['window_size'] = l
+    #                                 config['data']['h_step'] = k
+    #                                 config['data']['smooth'] = m
+    #                                 config['model']['num_layer'] = n
+    #                                 config['model']['kernel_height'] = o
+    #                                 config['model']['kernel_width'] = p
+    #                                 config['model']['note'] = f"{n}_{o}_{p}"
+    #                                 main(config)
+    main(config)
 
 
     
