@@ -90,8 +90,8 @@ def main(config_file):
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
         
-        np.save(os.path.join("results", f"train_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}"), train_loss)
-        np.save(os.path.join("results", f"val_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}{note}"), val_loss)
+        np.save(os.path.join("results", f"train_loss_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}"), train_loss)
+        np.save(os.path.join("results", f"val_loss_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}"), val_loss)
         
         
     if full_train:
