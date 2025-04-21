@@ -89,7 +89,7 @@ def main(config_file):
     np.save(f"results/attention_weights/{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}", weights)
     # print(weights)
 
-    np.save("weights", weights.numpy())
+    # np.save("weights", weights.numpy())
 
     # plt.imshow(weights[0,0].numpy(), cmap='coolwarm')
     # plt.title("Attention Head 0")
