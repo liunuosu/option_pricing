@@ -11,10 +11,10 @@ from pathlib import Path
 import os
 import numpy as np
 
-def main(config):
+def main(config_file):
     # print all information before starting the run
     print("Configuration Parameters:")
-    print_config(config)
+    print_config(config_file)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     print('start:', timestamp)
     start_time = time.time()
