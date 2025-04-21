@@ -37,16 +37,18 @@ class Transformer:
         self.smooth = config['data']['smooth']
         self.h_step = config['data']['h_step']
 
-        self.filters = config['model']['filters'] # 16 32 64 128 filter within the conv2DLSTM layer
-        self.kernel_height = config['model']['kernel_height']
-        self.kernel_width = config['model']['kernel_width'] # 1 to 5 (maturity) mxn -> 9x5
-        self.num_layer = config['model']['num_layer'] # Any positive integer >0
-        self.strides_dim = config['model']['strides_dim'] #: !!int 1 # assumes strides to be same across the two dimensions 
-        self.kernel_initializer = config['model']['kernel_initializer'] 
-        self.recurrent_initializer = config['model']['recurrent_initializer']
-        self.padding = config['model']['padding']
-        self.conv_activation = config['model']['conv_activation']
-        self.recurrent_activation = config['model']['recurrent_activation']
+        # self.filters = config['model']['filters'] # 16 32 64 128 filter within the conv2DLSTM layer
+        # self.kernel_height = config['model']['kernel_height']
+        # self.kernel_width = config['model']['kernel_width'] # 1 to 5 (maturity) mxn -> 9x5
+        # self.num_layer = config['model']['num_layer'] # Any positive integer >0
+        # self.strides_dim = config['model']['strides_dim'] #: !!int 1 # assumes strides to be same across the two dimensions 
+        # self.kernel_initializer = config['model']['kernel_initializer'] 
+        # self.recurrent_initializer = config['model']['recurrent_initializer']
+        # self.padding = config['model']['padding']
+        # self.conv_activation = config['model']['conv_activation']
+        # self.recurrent_activation = config['model']['recurrent_activation']
+        self.num_heads = config['model']['num_heads']
+        self.key_dim = config['model']['key_dim']
 
     def compile(self):
         tf.random.set_seed(self.seed)
@@ -62,12 +64,16 @@ class Transformer:
         # Positional Encoding (optional for now, can be added later)
 
         # Transformer block
-        attention_output, attention_weights = tf.keras.layers.MultiHeadAttention(
-            num_heads=4,
-            key_dim=16,
+        self_attention = tf.keras.layers.MultiHeadAttention(
+            num_heads=self.num_heads,
+            key_dim=self.key_dim,
             name="self_attention",
-            return_attention_scores=True
-        )(x, x, return_attention_scores=True)
+        )
+
+        attention_output, attention_scores = self_attention(
+            x, x, return_attention_scores=True
+        )
+
 
         x = tf.keras.layers.Add()([x, attention_output])
         x = tf.keras.layers.LayerNormalization()(x)
@@ -118,7 +124,7 @@ class Transformer:
         attention_output, attn_weights = attention_layer(
             embedded, embedded, return_attention_scores=True)
         
-        return attn_weights[0 ,0]
+        return attn_weights
     
     def pred(self, x_iv): 
         pred = self.model.predict(x_iv)
