@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
   
     for j in ['call', 'put']:
-        for l in [5, 21]:
+        for l in [63]:
             for covariate in all_covariates:
                 temp_config = config.copy()
                 temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
@@ -133,7 +133,7 @@ if __name__ == "__main__":
                 main(temp_config)
 
     for j in ['call', 'put']:
-        for l in [5, 21]:
+        for l in [63]:
             for i, covariate in enumerate(all_covariates):
                 temp_config = config.copy()
                 covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
