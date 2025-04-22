@@ -33,6 +33,5 @@ model:
   kernel_initializer: 'glorot_uniform'
   recurrent_initializer: 'orthogonal'
   padding: 'same'
-  note: 'run1'
   conv_activation: 'tanh'
   recurrent_activation: 'sigmoid'

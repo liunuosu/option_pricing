@@ -8,7 +8,7 @@ training:
   lr: !!float 1e-3
   
 data:
-  run: 'long_ttm'
+  run: 'short_ttm'
   option: 'call' #put, call, or both
   smooth: true
   full_train: false
@@ -27,7 +27,7 @@ data:
 model:
   filters: !!int 64 # 16 32 64 128 filter within the conv2DLSTM layer
   kernel_height: !!int 3 # 1 to 9 (moneyness) 3x3 kernel size?
-  kernel_width: !!int 3 # 1 to 5 (maturity) mxn -> 9x5
+  kernel_width: !!int 4 # 1 to 5 (maturity) mxn -> 9x5
   num_layer: !!int 2 # Any positive integer >0
   strides_dim: !!int 1 # assumes strides to be same across the two dimensions 
   kernel_initializer: 'glorot_uniform'

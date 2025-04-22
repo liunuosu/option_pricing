@@ -115,7 +115,7 @@ if __name__ == "__main__":
                                 config['data']['smooth'] = m
                                 config['model']['num_heads'] = n
                                 config['model']['key_dim'] = o
-                                config['model']['note'] = f"{n}_{o}_transformer"
+                                config['model']['note'] = f"{n}_{o}_transformerNEWv2"
                                 main(config)
 
 

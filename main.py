@@ -134,7 +134,7 @@ if __name__ == "__main__":
     config_original = 'config_file.yaml'
     config = get_config(config_original)
 
-    for l in [5, 21, 63]:
+    for l in [5, 21]:
         for k in [1, 5, 10]:
             for m in [True]:
                 for n in [2, 3]:

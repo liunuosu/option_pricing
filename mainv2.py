@@ -120,25 +120,53 @@ if __name__ == "__main__":
     config = get_config(config_name)
     all_covariates = config['data']['covariates']
 
-  
-    # for j in ['call', 'put']:
-    #     for l in [5, 21]:
-    #         for covariate in all_covariates:
-    #             temp_config = config.copy()
-    #             temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
-    #             print(f"Running model for covariate: {covariate}")
-    #             temp_config['data']['option'] = j
-    #             temp_config['data']['window_size'] = l
-    #             temp_config['model']['note'] = f"feature_importancev2"
-    #             main(temp_config)
-
+    #loops for the covariate importances
     for j in ['call', 'put']:
-        for l in [5, 21]:
+        for l in [5,21]:
             for i, covariate in enumerate(all_covariates):
                 temp_config = config.copy()
                 covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
                 temp_config['data']['covariates'] = covariates_loo
                 temp_config['data']['option'] = j
                 temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importancev2"
+                temp_config['model']['note'] = f"feature_importanceNEWv2"
                 main(temp_config)
+
+    
+    for j in ['call', 'put']:
+        for l in [5, 21]:
+            for covariate in all_covariates:
+                temp_config = config.copy()
+                temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
+                print(f"Running model for covariate: {covariate}")
+                temp_config['data']['option'] = j
+                temp_config['data']['window_size'] = l
+                temp_config['model']['note'] = f"feature_importanceNEWv2"
+                main(temp_config)
+
+    #loop for the real performace of CovConvLSTM
+
+    config_name_cov = 'config_file_covs.yaml'
+    config = get_config(config_name_cov)
+
+    for l in [5, 21]:
+        for k in [1, 5, 10]:
+            for m in [True]:
+                for n in [2]:
+                    for o in [3,7]:
+                        for p in [4]:
+                            for i in ['short_ttm']:
+                                for j in ['call', 'put']:
+                                    config['data']['run'] = i
+                                    config['data']['option'] = j
+                                    config['data']['window_size'] = l
+                                    config['data']['h_step'] = k
+                                    config['data']['smooth'] = m
+                                    config['model']['num_layer'] = n
+                                    config['model']['kernel_height'] = o
+                                    config['model']['kernel_width'] = p
+                                    config['model']['note'] = f"{n}_{o}_{p}_covconvLSTMNEW"
+                                    main(config)
+
+
+    
