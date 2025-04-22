@@ -150,7 +150,7 @@ if __name__ == "__main__":
                                     config['model']['num_layer'] = n
                                     config['model']['kernel_height'] = o
                                     config['model']['kernel_width'] = p
-                                    config['model']['note'] = f"{n}_{o}_{p}_fixed"
+                                    config['model']['note'] = f"{n}_{o}_{p}_convLSTMNEW"
                                     main(config)
 
 
