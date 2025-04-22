@@ -99,13 +99,13 @@ def load_data(run, option_type, covariate_columns, full_train=False):
             data_test = pd.read_csv('data/final/evaluation/test_set.csv')
 
             if option_type =='put':
-                data_train[data_train['cp_flag']=='P']
-                data_val[data_val['cp_flag']=='P']
-                data_test[data_test['cp_flag']=='P']
+                data_train = data_train[data_train['cp_flag']=='P']
+                data_val = data_val[data_val['cp_flag']=='P']
+                data_test = data_test[data_test['cp_flag']=='P']
             elif option_type =='call':
-                data_train[data_train['cp_flag']=='C']
-                data_val[data_val['cp_flag']=='C']
-                data_test[data_test['cp_flag']=='C']
+                data_train = data_train[data_train['cp_flag']=='C']
+                data_val = data_val[data_val['cp_flag']=='C']
+                data_test = data_test[data_test['cp_flag']=='C']
 
             if covariate_columns:
                 covar_df = pd.read_excel('data/final/covariates/covariates_train.xlsx')
@@ -124,13 +124,13 @@ def load_data(run, option_type, covariate_columns, full_train=False):
             data_test = pd.read_csv('data/final/evaluation/test_set_long.csv')
 
             if option_type =='put':
-                data_train[data_train['cp_flag']=='P']
-                data_val[data_val['cp_flag']=='P']
-                data_test[data_test['cp_flag']=='P']
+                data_train = data_train[data_train['cp_flag']=='P']
+                data_val = data_val[data_val['cp_flag']=='P']
+                data_test = data_test[data_test['cp_flag']=='P']
             elif option_type =='call':
-                data_train[data_train['cp_flag']=='C']
-                data_val[data_val['cp_flag']=='C']
-                data_test[data_test['cp_flag']=='C']
+                data_train = data_train[data_train['cp_flag']=='C']
+                data_val = data_val[data_val['cp_flag']=='C']
+                data_test = data_test[data_test['cp_flag']=='C']
                 
             if covariate_columns:
                 covar_df = pd.read_excel('data/final/covariates/covariates_train_long.xlsx')
@@ -153,11 +153,11 @@ def load_data(run, option_type, covariate_columns, full_train=False):
             data_test = pd.read_csv('data/final/evaluation/test_set.csv')
 
             if option_type =='put':
-                data_train[data_train['cp_flag']=='P']
-                data_test[data_test['cp_flag']=='P']
+                data_train = data_train[data_train['cp_flag']=='P']
+                data_test = data_test[data_test['cp_flag']=='P']
             elif option_type =='call':
-                data_train[data_train['cp_flag']=='C']
-                data_test[data_test['cp_flag']=='C']
+                data_train = data_train[data_train['cp_flag']=='C']
+                data_test = data_test[data_test['cp_flag']=='C']
 
             if covariate_columns:
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation.xlsx')
@@ -171,11 +171,11 @@ def load_data(run, option_type, covariate_columns, full_train=False):
             data_test = pd.read_csv('data/final/evaluation/test_set_long.csv')
 
             if option_type =='put':
-                data_train[data_train['cp_flag']=='P']
-                data_test[data_test['cp_flag']=='P']
+                data_train = data_train[data_train['cp_flag']=='P']
+                data_test = data_test[data_test['cp_flag']=='P']
             elif option_type =='call':
-                data_train[data_train['cp_flag']=='C']
-                data_test[data_test['cp_flag']=='C']
+                data_train = data_train[data_train['cp_flag']=='C']
+                data_test = data_test[data_test['cp_flag']=='C']
                 
             if covariate_columns:
                 covar_df_val = pd.read_excel('data/final/covariates/covariates_validation_long.xlsx')
