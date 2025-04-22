@@ -125,11 +125,11 @@ if __name__ == "__main__":
         for l in [5, 21]:
             for covariate in all_covariates:
                 temp_config = config.copy()
-                temp_config['covariates'] = [covariate]  # Assign only one covariate
+                temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
                 print(f"Running model for covariate: {covariate}")
                 temp_config['data']['option'] = j
                 temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importance"
+                temp_config['model']['note'] = f"feature_importancev2"
                 main(temp_config)
 
     for j in ['call', 'put']:
@@ -137,8 +137,8 @@ if __name__ == "__main__":
             for i, covariate in enumerate(all_covariates):
                 temp_config = config.copy()
                 covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
-                temp_config['covariates'] = covariates_loo
+                temp_config['data']['covariates'] = covariates_loo
                 temp_config['data']['option'] = j
                 temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importance"
+                temp_config['model']['note'] = f"feature_importancev2"
                 main(temp_config)
