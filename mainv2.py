@@ -90,8 +90,8 @@ def main(config_file):
         write_results(folder_path, ivrmse, r_oos, ivrmse_h, r_oos_h, IV_test[h_step-1:], 
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
         
-        np.save(os.path.join("results", f"train_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}"), train_loss)
-        np.save(os.path.join("results", f"val_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}{note}"), val_loss)
+        # np.save(os.path.join("results", f"train_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}_{note}"), train_loss)
+        # np.save(os.path.join("results", f"val_loss.npy_{run}_{option_type}_sm_{smooth}_ws_{window_size}_h_{h_step}{note}"), val_loss)
         
         
     if full_train:
@@ -116,42 +116,29 @@ def main(config_file):
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
 if __name__ == "__main__":
-    # config_name = 'config_file_covs.yaml'
-    # config = get_config(config_name)
+    config_name = 'config_file_covs2.yaml'
+    config = get_config(config_name)
+    all_covariates = config['data']['covariates']
 
-    # for i in ['long_ttm', 'short_ttm']:
-    #     for j in ['call', 'put']:
-    #         for l in [5, 21]:
-    #             for k in [1, 5, 10]:
-    #                 for m in [True, False]:
-    #                     config['data']['run'] = i
-    #                     config['data']['option'] = j
-    #                     config['data']['window_size'] = l
-    #                     config['data']['h_step'] = k
-    #                     config['data']['smooth'] = m
-    #                     main(config)
-    
-    config_original = 'config_file.yaml'
-    config = get_config(config_original)
-    # for i in ['long_ttm', 'short_ttm']:
-    #     for j in ['call', 'put']:
-    #         for l in [5, 21]:
-    #             for k in [1, 5, 10]:
-    #                 for m in [True, False]:
-    #                     for n in [1, 2, 3]:
-    #                         for o in [3, 5, 7]:
-    #                             for p in [2, 3, 4]:
-    #                                 config['data']['run'] = i
-    #                                 config['data']['option'] = j
-    #                                 config['data']['window_size'] = l
-    #                                 config['data']['h_step'] = k
-    #                                 config['data']['smooth'] = m
-    #                                 config['model']['num_layer'] = n
-    #                                 config['model']['kernel_height'] = o
-    #                                 config['model']['kernel_width'] = p
-    #                                 config['model']['note'] = f"{n}_{o}_{p}"
-    #                                 main(config)
-    main(config)
+  
+    for j in ['call', 'put']:
+        for l in [5, 21]:
+            for covariate in all_covariates:
+                temp_config = config.copy()
+                temp_config['covariates'] = [covariate]  # Assign only one covariate
+                print(f"Running model for covariate: {covariate}")
+                temp_config['data']['option'] = j
+                temp_config['data']['window_size'] = l
+                temp_config['model']['note'] = f"feature_importance"
+                main(temp_config)
 
-
-    
+    for j in ['call', 'put']:
+        for l in [5, 21]:
+            for i, covariate in enumerate(all_covariates):
+                temp_config = config.copy()
+                covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
+                temp_config['covariates'] = covariates_loo
+                temp_config['data']['option'] = j
+                temp_config['data']['window_size'] = l
+                temp_config['model']['note'] = f"feature_importance"
+                main(temp_config)
