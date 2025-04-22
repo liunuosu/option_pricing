@@ -56,6 +56,27 @@ def calculate_r_oos_mask_train(y_true, y_pred, y_train, all_points=False):
     return r2.numpy()
 
 
+def calculate_r_oos_mask_test(y_true, y_pred, y_train, all_points=False):
+    mask = tf.cast(y_true > 0, tf.double)
+    
+    # Compute the baseline mean IV from the training set across time (axis=0)
+    numerator = tf.reduce_sum(y_true * mask)  # shape: [H, W]
+    denominator = tf.reduce_sum(y_true)          # shape: [H, W]
+    mean_IV = numerator / denominator  # shape: [H, W]
+
+    if not all_points:
+        ss_res = tf.reduce_sum(tf.square(y_true - y_pred) * mask)
+        ss_tot = tf.reduce_sum(tf.square(y_true - mean_IV) * mask)
+        r2 = 1 - ss_res / ss_tot
+    else:
+        ss_res = tf.reduce_sum(tf.square(y_true - y_pred) * mask, axis=[1, 2])
+        ss_tot = tf.reduce_sum(tf.square(y_true - mean_IV) * mask, axis=[1, 2])
+        r2 = 1 - ss_res / ss_tot
+
+    return r2.numpy()
+
+
+
 def calculate_r_oos_mask(y_true, y_pred, all_points=False):
 
     mask = tf.cast(y_true > 0, tf.double)

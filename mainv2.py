@@ -119,26 +119,23 @@ if __name__ == "__main__":
     config_name = 'config_file_covs2.yaml'
     config = get_config(config_name)
     all_covariates = config['data']['covariates']
-
-  
+    # for j in ['call', 'put']:
+    #     for l in [63]:
+    #         for covariate in all_covariates:
+    #             temp_config = config.copy()
+    #             temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
+    #             print(f"Running model for covariate: {covariate}")
+    #             temp_config['data']['option'] = j
+    #             temp_config['data']['window_size'] = l
+    #             temp_config['model']['note'] = f"feature_importancev3"
+    #             main(temp_config)
     for j in ['call', 'put']:
-        for l in [63]:
-            for covariate in all_covariates:
-                temp_config = config.copy()
-                temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
-                print(f"Running model for covariate: {covariate}")
-                temp_config['data']['option'] = j
-                temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importancev2"
-                main(temp_config)
-
-    for j in ['call', 'put']:
-        for l in [63]:
+        for l in [5, 21]:
             for i, covariate in enumerate(all_covariates):
                 temp_config = config.copy()
                 covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
                 temp_config['data']['covariates'] = covariates_loo
                 temp_config['data']['option'] = j
                 temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importancev2"
+                temp_config['model']['note'] = f"feature_importancev3"
                 main(temp_config)

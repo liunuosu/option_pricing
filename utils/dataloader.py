@@ -47,9 +47,14 @@ def dataloader(run, option_type, smooth, full_train, covariate_columns, window_s
         data_val = retrieve_data(run, val_name, folder_path, val_raw, covar_df)
         data_test = retrieve_data(run, test_name, folder_path, test_raw, covar_df)
 
-        IV_train, cov_train = frame_to_numpy(data_train, covariate_columns)
-        IV_val, cov_val = frame_to_numpy(data_val, covariate_columns)
-        IV_test, cov_test = frame_to_numpy(data_test, covariate_columns)
+        maturity_values = np.sort(data_train['maturity'].unique())
+        maturity_to_idx = {mat: i for i, mat in enumerate(maturity_values)}
+        moneyness_values = np.sort(data_train['moneyness'].unique())
+        moneyness_to_idx = {mon: i for i, mon in enumerate(moneyness_values)}
+
+        IV_train, cov_train = frame_to_numpy(data_train, maturity_to_idx, moneyness_to_idx, covariate_columns)
+        IV_val, cov_val = frame_to_numpy(data_val, maturity_to_idx, moneyness_to_idx, covariate_columns)
+        IV_test, cov_test = frame_to_numpy(data_test, maturity_to_idx, moneyness_to_idx, covariate_columns)
 
         x_iv_train, x_cov_train, target_train = create_rolling_window_dataset(IV_train, cov_train, window_size, h_step)
 
@@ -72,8 +77,14 @@ def dataloader(run, option_type, smooth, full_train, covariate_columns, window_s
         data_train = retrieve_data(run, train_name, folder_path, train_raw, covar_df_val, smooth)
         data_test = retrieve_data(run, test_name, folder_path, test_raw, covar_df_val)
 
-        IV_train, cov_train = frame_to_numpy(data_train, covariate_columns)
-        IV_test, cov_test = frame_to_numpy(data_test, covariate_columns)
+        maturity_values = np.sort(data_train['maturity'].unique())
+        maturity_to_idx = {mat: i for i, mat in enumerate(maturity_values)}
+
+        moneyness_values = np.sort(data_train['moneyness'].unique())
+        moneyness_to_idx = {mon: i for i, mon in enumerate(moneyness_values)}
+
+        IV_train, cov_train = frame_to_numpy(data_train, maturity_to_idx, moneyness_to_idx, covariate_columns)
+        IV_test, cov_test = frame_to_numpy(data_test, maturity_to_idx, moneyness_to_idx, covariate_columns)
 
         x_iv_train, x_cov_train, target_train = create_rolling_window_dataset(IV_train, cov_train, window_size, h_step)
 
@@ -227,7 +238,7 @@ def bin_avg(df, moneyness_grid, bin_width=0.05, train=True):
     # Return the final dataframe with the binned results
     return pd.DataFrame(result)
 
-def frame_to_numpy(data, covariate_cols=None):
+def frame_to_numpy(data, maturity_to_idx, moneyness_to_idx, covariate_cols=None):
     
     data['time_step'] = data['date']
     time_step_index = pd.to_datetime(data['time_step']).dt.strftime('%Y-%m-%d').unique()
@@ -237,15 +248,10 @@ def frame_to_numpy(data, covariate_cols=None):
     data['time_step_idx'] = data['time_step_str'].map(date_to_index)
     #data['time_step_idx'] = data['time_step'].apply(lambda x: np.where(time_step_index == x.strftime('%Y-%m-%d'))[0][0])
 
-    maturity_values = np.sort(data['maturity'].unique())
-    maturity_to_idx = {mat: i for i, mat in enumerate(maturity_values)}
-
-    moneyness_values = np.sort(data['moneyness'].unique())
-    moneyness_to_idx = {mon: i for i, mon in enumerate(moneyness_values)}
 
     time_steps = len(time_step_index)
-    money_dim = len(data['moneyness'].unique())
-    ttm_dim = len(maturity_values)
+    money_dim = 9
+    ttm_dim = 5
 
     # Base IV tensor
     IV_array = np.zeros((time_steps, money_dim, ttm_dim, 1))

@@ -113,7 +113,7 @@ if __name__ == "__main__":
                                 config['data']['window_size'] = l
                                 config['data']['h_step'] = k
                                 config['data']['smooth'] = m
-                                config['model']['note'] = f"{n}_{o}_transformer"
+                                config['model']['note'] = f"{n}_{o}_transformerNEW"
                                 main(config)
 
 

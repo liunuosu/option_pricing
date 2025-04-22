@@ -28,4 +28,4 @@ model:
   num_heads: !!int 4
   key_dim: !!int 16
 
-  note: 'afterfix' # small note to be added in the writing of the results output
+  note: 'afterfix_NEW' # small note to be added in the writing of the results output
