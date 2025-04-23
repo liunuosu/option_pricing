@@ -133,16 +133,16 @@ if __name__ == "__main__":
                 main(temp_config)
 
     
-    for j in ['call', 'put']:
-        for l in [5, 21]:
-            for covariate in all_covariates:
-                temp_config = config.copy()
-                temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
-                print(f"Running model for covariate: {covariate}")
-                temp_config['data']['option'] = j
-                temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importanceNEWv2"
-                main(temp_config)
+    # for j in ['call', 'put']:
+    #     for l in [5, 21]:
+    #         for covariate in all_covariates:
+    #             temp_config = config.copy()
+    #             temp_config['data']['covariates'] = [covariate]  # Assign only one covariate
+    #             print(f"Running model for covariate: {covariate}")
+    #             temp_config['data']['option'] = j
+    #             temp_config['data']['window_size'] = l
+    #             temp_config['model']['note'] = f"feature_importanceNEWv2"
+    #             main(temp_config)
 
     #loop for the real performace of CovConvLSTM
 
