@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 import tensorflow as tf
 
 def calculate_ivrmse(y_true, y_pred):
@@ -39,7 +37,6 @@ def calculate_r_oos_mask_train(y_true, y_pred, y_train, all_points=False):
     mask = tf.cast(y_true > 0, tf.double)
     train_mask = tf.cast(y_train > 0, tf.double)
 
-    # Compute the baseline mean IV from the training set across time (axis=0)
     numerator = tf.reduce_sum(y_train * train_mask)  # shape: [H, W]
     denominator = tf.reduce_sum(train_mask)          # shape: [H, W]
     mean_IV = numerator / denominator  # shape: [H, W]
@@ -59,10 +56,9 @@ def calculate_r_oos_mask_train(y_true, y_pred, y_train, all_points=False):
 def calculate_r_oos_mask_test(y_true, y_pred, y_train, all_points=False):
     mask = tf.cast(y_true > 0, tf.double)
     
-    # Compute the baseline mean IV from the training set across time (axis=0)
-    numerator = tf.reduce_sum(y_true * mask)  # shape: [H, W]
-    denominator = tf.reduce_sum(y_true)          # shape: [H, W]
-    mean_IV = numerator / denominator  # shape: [H, W]
+    numerator = tf.reduce_sum(y_true * mask)  
+    denominator = tf.reduce_sum(y_true)      
+    mean_IV = numerator / denominator  
 
     if not all_points:
         ss_res = tf.reduce_sum(tf.square(y_true - y_pred) * mask)
@@ -74,7 +70,6 @@ def calculate_r_oos_mask_test(y_true, y_pred, y_train, all_points=False):
         r2 = 1 - ss_res / ss_tot
 
     return r2.numpy()
-
 
 
 def calculate_r_oos_mask(y_true, y_pred, all_points=False):

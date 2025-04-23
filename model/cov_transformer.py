@@ -4,16 +4,14 @@ from keras.models import Sequential, Model
 from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
 from keras.layers import Masking, Embedding
 from keras.layers import LayerNormalization, MultiHeadAttention, Dropout, Add
-import yaml
 from utils.loss import masked_mse
-from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
 import numpy as np
 
 class CovTransformer:
 
     def __init__(self, x_iv_train, x_cov_train, y_iv_train, \
                  x_iv_val=None, x_cov_val=None, y_iv_val=None, config=None):
-        self.read_config(config) # Read the parameters and set the data
+        self.read_config(config) 
         self.x_iv_train = x_iv_train
         self.x_cov_train = x_cov_train
         self.target_train = y_iv_train
@@ -48,43 +46,36 @@ class CovTransformer:
         num_covariates = len(self.covariate_columns)
         patch_dim = height * width
 
-        # ---- Inputs ----
         iv_input = Input(shape=(time_steps, height, width, 1), name="iv_input")
         cov_input = Input(shape=(time_steps, num_covariates), name="cov_input")
-
-        # ---- Reshape IV surfaces into sequences ----
+        
         x_iv = tf.reshape(iv_input, [-1, time_steps, patch_dim])  # (B, T, H*W)
-        x_iv = Dense(64)(x_iv)  # Project to a feature space
+        x_iv = Dense(64)(x_iv)  # feature space
         x_iv = LayerNormalization()(x_iv)
 
-        # ---- Positional encoding ----
         positions = tf.range(start=0, limit=time_steps, delta=1)
-        pos_encoding = Embedding(input_dim=time_steps, output_dim=64)(positions)  # (T, 64)
-        x_iv += pos_encoding  # Broadcasted addition
+        pos_encoding = Embedding(input_dim=time_steps, output_dim=64)(positions) 
+        x_iv += pos_encoding  
 
-        # ---- Transformer Block ----
-        attn_output = MultiHeadAttention(num_heads=self.num_heads, key_dim=self.key_dim)(x_iv, x_iv)  # (B, T, 64)
+        #Transformer 
+        attn_output = MultiHeadAttention(num_heads=self.num_heads, key_dim=self.key_dim)(x_iv, x_iv) 
         x = Add()([x_iv, attn_output])
         x = LayerNormalization()(x)
-
-        # Feedforward layer
+        #Feedforward layer
         ff = Dense(128, activation='relu')(x)
         ff = Dense(64)(ff)
         x = Add()([x, ff])
         x = LayerNormalization()(x)
 
-        x_iv_out = x[:, -1, :]  # Take the last timestep's output as summary (you can pool too)
-
-        # ---- Covariates Branch ----
+        x_iv_out = x[:, -1, :]  
         x_cov = LSTM(units=64, return_sequences=False)(cov_input)
         x_cov = Dense(units=64, activation='relu')(x_cov)
 
-        # ---- Combine ----
+        # concat outputs
         x = Concatenate()([x_iv_out, x_cov])
         x = Dense(units=patch_dim, activation='relu')(x)
         x = Reshape((height, width, 1))(x)
 
-        # Optional final conv
         x = Conv2D(filters=1, kernel_size=(1, 1), activation='sigmoid', padding='same')(x)
 
         self.model = Model(inputs=[iv_input, cov_input], outputs=x)

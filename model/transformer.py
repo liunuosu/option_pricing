@@ -5,7 +5,6 @@ from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,In
 from keras.layers import Masking, InputLayer
 import yaml
 from utils.loss import masked_mse
-from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
 import numpy as np
 
 from keras.layers import LayerNormalization, MultiHeadAttention, Dense, Dropout, Layer, Input, TimeDistributed, Reshape, Flatten
@@ -15,7 +14,7 @@ class Transformer:
 
     def __init__(self, x_iv_train, y_iv_train, \
                  x_iv_val=None, y_iv_val=None, config=None):
-        self.read_config(config) # Read the parameters and set the data
+        self.read_config(config) 
         self.x_iv_train = x_iv_train
         self.target_train = y_iv_train
         self.x_iv_val = x_iv_val
@@ -61,9 +60,6 @@ class Transformer:
         x = tf.keras.layers.Reshape((time_steps, height * width))(inputs)  # flatten spatial grid
         x = tf.keras.layers.Dense(64)(x)  # project to embedding dim
 
-        # Positional Encoding (optional for now, can be added later)
-
-        # Transformer block
         self_attention = tf.keras.layers.MultiHeadAttention(
             num_heads=self.num_heads,
             key_dim=self.key_dim,
@@ -109,17 +105,14 @@ class Transformer:
     
 
     def get_attention(self):
-        # Extract input batch
-        sample_input = self.x_iv_val[0:1]  # shape: (1, time, height, width, channels)
+        sample_input = self.x_iv_val[0:1]  #(1, time, height, width, channels)
 
-        # Reshape input to match attention layer shape
         flattened = tf.reshape(sample_input, (1, sample_input.shape[1], -1))  # (1, time, H*W)
 
-        # Project with same Dense layer used before attention
-        dense = tf.keras.layers.Dense(64)  # or get it from model if you want to be precise
+        dense = tf.keras.layers.Dense(64)  
         embedded = dense(flattened)
 
-        # Get attention layer
+        # attention layer
         attention_layer = self.model.get_layer("self_attention")
         attention_output, attn_weights = attention_layer(
             embedded, embedded, return_attention_scores=True)

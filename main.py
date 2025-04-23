@@ -1,8 +1,6 @@
-import pandas as pd 
 from utils import get_config, print_config, get_results, write_results
 from utils.dataloader import dataloader
 from utils.loss import plot_loss
-import yaml
 import time
 from datetime import datetime
 from model.cov_convlstm import CovConvLSTM
@@ -136,7 +134,7 @@ if __name__ == "__main__":
 
     for l in [5, 21]:
         for k in [1, 5, 10]:
-            for m in [True]:
+            for m in [False]:
                 for n in [2, 3]:
                     for o in [3,7]:
                         for p in [4]:

@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import os
-from pathlib import Path
 
 def retrieve_data(run, filename, folder_path, raw, covar_df, smooth=False):
 
@@ -49,7 +48,7 @@ def dataloader(run, option_type, smooth, full_train, covariate_columns, window_s
 
         maturity_values = np.sort(data_train['maturity'].unique())
         maturity_to_idx = {mat: i for i, mat in enumerate(maturity_values)}
-        moneyness_values = np.sort(data_train['moneyness'].unique())
+        moneyness_values = np.sort(np.round(data_train['moneyness'].unique(), 5))
         moneyness_to_idx = {mon: i for i, mon in enumerate(moneyness_values)}
 
         IV_train, cov_train = frame_to_numpy(data_train, maturity_to_idx, moneyness_to_idx, covariate_columns)
@@ -259,7 +258,7 @@ def frame_to_numpy(data, maturity_to_idx, moneyness_to_idx, covariate_cols=None)
 
     for idx, row in data.iterrows():
         time_step_idx = row['time_step_idx']
-        height = moneyness_to_idx[row['moneyness']]
+        height = moneyness_to_idx[np.round(row['moneyness'],5 )]
         width = maturity_to_idx[row['maturity']]
         value = row['impl_volatility']
         IV_array[time_step_idx, height, width, 0] = value

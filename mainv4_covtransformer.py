@@ -1,14 +1,11 @@
-import pandas as pd 
 from utils import get_config, print_config, get_results, write_results
 from utils.dataloader import dataloader
 from utils.loss import plot_loss
-import yaml
 import time
 from datetime import datetime
 from model.cov_transformer import CovTransformer
 from pathlib import Path
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 
 def main(config_file):
