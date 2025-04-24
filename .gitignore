@@ -8,3 +8,5 @@ report/
 notes/
 submissions/
 github_pages/
+utils/__pycache__/
+model/__pycache__/
