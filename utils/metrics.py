@@ -57,7 +57,7 @@ def calculate_r_oos_mask_test(y_true, y_pred, y_train, all_points=False):
     mask = tf.cast(y_true > 0, tf.double)
     
     numerator = tf.reduce_sum(y_true * mask)  
-    denominator = tf.reduce_sum(y_true)      
+    denominator = tf.reduce_sum(mask)  # BUG HERE, was y_true, should be # mask!!!!!    
     mean_IV = numerator / denominator  
 
     if not all_points:
