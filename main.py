@@ -132,10 +132,10 @@ if __name__ == "__main__":
     config_original = 'config_file.yaml'
     config = get_config(config_original)
 
-    for l in [5, 21]:
+    for l in [63]:
         for k in [1, 5, 10]:
-            for m in [False]:
-                for n in [2, 3]:
+            for m in [True, False]:
+                for n in [2]:
                     for o in [3,7]:
                         for p in [4]:
                             for i in ['long_ttm', 'short_ttm']:
