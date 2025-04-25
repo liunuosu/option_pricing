@@ -60,6 +60,12 @@ class Transformer:
         x = tf.keras.layers.Reshape((time_steps, height * width))(inputs)  # flatten spatial grid
         x = tf.keras.layers.Dense(64)(x)  # project to embedding dim
 
+        def create_causal_mask(seq_len):
+            return np.triu(np.ones((seq_len, seq_len)), k=1)
+
+        # When calling the self-attention layer
+        mask = create_causal_mask(time_steps)  # time_steps is the sequence length
+
         self_attention = tf.keras.layers.MultiHeadAttention(
             num_heads=self.num_heads,
             key_dim=self.key_dim,
@@ -67,7 +73,7 @@ class Transformer:
         )
 
         attention_output, attention_scores = self_attention(
-            x, x, return_attention_scores=True
+            x, x, attention_mask=mask, return_attention_scores=True
         )
 
 
