@@ -57,8 +57,25 @@ class CovTransformer:
         pos_encoding = Embedding(input_dim=time_steps, output_dim=64)(positions) 
         x_iv += pos_encoding  
 
+        def create_causal_mask(seq_len):
+           return np.triu(np.ones((seq_len, seq_len)), k=1)
+
+        # # When calling the self-attention layer
+        mask = create_causal_mask(time_steps)  # time_steps is the sequence length
+
+        # self_attention = tf.keras.layers.MultiHeadAttention(
+        #     num_heads=self.num_heads,
+        #     key_dim=self.key_dim,
+        #     name="self_attention",
+        # )
+
+        # attention_output, attention_scores = self_attention(
+        #     x, x, attention_mask=mask, return_attention_scores=True
+        # )
+
         #Transformer 
-        attn_output = MultiHeadAttention(num_heads=self.num_heads, key_dim=self.key_dim)(x_iv, x_iv) 
+        attn_output = MultiHeadAttention(num_heads=self.num_heads, 
+                                         key_dim=self.key_dim)(x_iv, x_iv, attention_mask = mask) 
         x = Add()([x_iv, attn_output])
         x = LayerNormalization()(x)
         #Feedforward layer
