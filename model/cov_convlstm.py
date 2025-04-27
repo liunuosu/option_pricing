@@ -1,12 +1,11 @@
 import tensorflow as tf
-from tensorflow import keras
-from keras.models import Sequential, Model
-from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
-from keras.layers import Masking
-import yaml
-from utils.loss import masked_mse
-from utils.metrics import calculate_ivrmse_mask, calculate_r_oos_mask
 import numpy as np
+from tensorflow import keras
+from keras.models import Model
+from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, \
+                            Input, Dense, Reshape, Concatenate, Masking
+from keras.utils import plot_model
+from utils.loss import masked_mse
 
 class CovConvLSTM:
 
@@ -120,4 +119,8 @@ class CovConvLSTM:
     def pred(self, x_iv, x_cov): 
         pred = self.model.predict([x_iv, x_cov])
         return pred
+    
+    def plot_architecture(self, filename='covconvlstm.png'):
+        plot_model(self.model, to_file=filename, show_shapes=True, show_layer_names=False,
+                   dpi=300, rankdir='TB')
     

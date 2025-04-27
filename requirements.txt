@@ -11,4 +11,6 @@ ipykernel==6.29.5
 seaborn==0.13.2
 openpyxl==3.5.1
 xlrd==2.0.1
+pydot==3.0.4
+graphviz==2.50.0
 python_version=="3.10.16"

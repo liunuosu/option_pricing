@@ -1,14 +1,12 @@
 import tensorflow as tf
+import numpy as np
+from utils.loss import masked_mse
 from tensorflow import keras
 from keras.models import Sequential, Model
 from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
 from keras.layers import Masking, InputLayer
-import yaml
-from utils.loss import masked_mse
-import numpy as np
-
+from keras.utils import plot_model
 from keras.layers import LayerNormalization, MultiHeadAttention, Dense, Dropout, Layer, Input, TimeDistributed, Reshape, Flatten
-from keras.models import Model
 
 class Transformer:
 
@@ -128,4 +126,8 @@ class Transformer:
     def pred(self, x_iv): 
         pred = self.model.predict(x_iv)
         return pred
+    
+    def plot_architecture(self, filename='transformer.png'):
+        plot_model(self.model, to_file=filename, show_shapes=True, show_layer_names=False,
+                   dpi=300, rankdir='TB')
     

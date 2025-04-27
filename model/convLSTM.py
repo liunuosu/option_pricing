@@ -1,8 +1,9 @@
 import tensorflow as tf
 from tensorflow import keras
-from keras.models import Sequential, Model
-from keras.layers import ConvLSTM2D, LSTM, BatchNormalization, Conv3D, Conv2D,Input, Dense, Reshape, Concatenate
+from keras.models import Sequential
+from keras.layers import ConvLSTM2D, BatchNormalization
 from keras.layers import Masking, InputLayer
+from keras.utils import plot_model
 from utils.loss import masked_mse
 import numpy as np
 
@@ -113,4 +114,8 @@ class ConvLSTM:
     def pred(self, x_iv): 
         pred = self.model.predict(x_iv)
         return pred
+    
+    def plot_architecture(self, filename='convlstm.png'):
+        plot_model(self.model, to_file=filename, show_shapes=True, show_layer_names=False,
+                   dpi=300, rankdir='TB')
     
