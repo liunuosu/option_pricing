@@ -113,21 +113,21 @@ def main(config_file):
                       pred_test, covariate_columns, option_type, smooth, window_size, h_step, note)
 
 if __name__ == "__main__":
-    config_name = 'config_file_covs2.yaml'
-    config = get_config(config_name)
-    all_covariates = config['data']['covariates']
+    # config_name = 'config_file_covs2.yaml'
+    # config = get_config(config_name)
+    # all_covariates = config['data']['covariates']
 
-    #loops for the covariate importances
-    for j in ['call', 'put']:
-        for l in [5,21]:
-            for i, covariate in enumerate(all_covariates):
-                temp_config = config.copy()
-                covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
-                temp_config['data']['covariates'] = covariates_loo
-                temp_config['data']['option'] = j
-                temp_config['data']['window_size'] = l
-                temp_config['model']['note'] = f"feature_importanceNEWv2"
-                main(temp_config)
+    # #loops for the covariate importances
+    # for j in ['call', 'put']:
+    #     for l in [5,21]:
+    #         for i, covariate in enumerate(all_covariates):
+    #             temp_config = config.copy()
+    #             covariates_loo = all_covariates[:i] + all_covariates[i+1:]  # Exclude one
+    #             temp_config['data']['covariates'] = covariates_loo
+    #             temp_config['data']['option'] = j
+    #             temp_config['data']['window_size'] = l
+    #             temp_config['model']['note'] = f"feature_importanceNEWv2"
+    #             main(temp_config)
 
     
     # for j in ['call', 'put']:
@@ -146,10 +146,10 @@ if __name__ == "__main__":
     config_name_cov = 'config_file_covs.yaml'
     config = get_config(config_name_cov)
 
-    for l in [5, 21]:
+    for l in [63]:
         for k in [1, 5, 10]:
             for m in [True]:
-                for n in [3]:
+                for n in [1,2,3]:
                     for o in [3,7]:
                         for p in [4]:
                             for i in ['short_ttm']:
