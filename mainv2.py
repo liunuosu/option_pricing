@@ -146,8 +146,8 @@ if __name__ == "__main__":
     config_name_cov = 'config_file_covs.yaml'
     config = get_config(config_name_cov)
 
-    for l in [63]:
-        for k in [1, 5, 10]:
+    for l in [5, 10, 21, 63]:
+        for k in [21]:
             for m in [True]:
                 for n in [1,2,3]:
                     for o in [3,7]:

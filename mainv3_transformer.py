@@ -100,7 +100,7 @@ if __name__ == "__main__":
     for i in ['short_ttm']:
         for j in ['call', 'put']:
             for l in [5, 21, 63]:
-                for k in [1, 5, 10]:
+                for k in [21]:
                     for m in [True]:
                         for n in [4, 8, 16]:
                             for o in [16, 32, 64]:
